@@ -9,6 +9,7 @@ Created on Tue Apr 16 16:26:38 2019
 import requests
 import urllib 
 import sys
+import time
 base = 'https://s3.amazonaws.com/google-landmark/train/'
 url=''
 img = ''
@@ -31,7 +32,7 @@ def callbackfunc(blocknum, blocksize, totalsize):
     if percent == 100:
         print('')
         #input('输入任意键继续...')
-for i in range(500)[2:100]:
+for i in range(500)[3:500]:
     if i < 10:
         img = 'images_00' + str(i) + '.tar'
         url = base + img       
@@ -45,5 +46,6 @@ for i in range(500)[2:100]:
     
     print('downloading ', url)
     urllib.request.urlretrieve(url, 'images/' + img, callbackfunc)
+    time.sleep(10)
     
     #https://s3.amazonaws.com/google-landmark/train/images_000.tar
