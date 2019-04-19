@@ -30,8 +30,8 @@ def callbackfunc(blocknum, blocksize, totalsize):
     sys.stdout.flush()
     if percent == 100:
         print('')
-        input('输入任意键继续...')
-for i in range(500)[1:]:
+        #input('输入任意键继续...')
+for i in range(500)[1:100]:
     if i < 10:
         img = 'images_00' + str(i) + '.tar'
         url = base + img       
