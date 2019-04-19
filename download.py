@@ -44,6 +44,6 @@ for i in range(500)[1:]:
             url = base + img    
     
     print('downloading ', url)
-    urllib.request.urlretrieve(url, img, callbackfunc)
+    urllib.request.urlretrieve(url, 'images/' + img, callbackfunc)
     
     #https://s3.amazonaws.com/google-landmark/train/images_000.tar
