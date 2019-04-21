@@ -32,7 +32,9 @@ def callbackfunc(blocknum, blocksize, totalsize):
     if percent == 100:
         print('')
         #input('输入任意键继续...')
-for i in range(500)[3:500]:
+def download(url, file,callbackfunc):
+    urllib.request.urlretrieve(url, file, callbackfunc)
+for i in range(500)[4:500]:
     if i < 10:
         img = 'images_00' + str(i) + '.tar'
         url = base + img       
@@ -45,7 +47,7 @@ for i in range(500)[3:500]:
             url = base + img    
     
     print('downloading ', url)
-    urllib.request.urlretrieve(url, 'images/' + img, callbackfunc)
+    download(url, 'images/' + img, callbackfunc)
     time.sleep(10)
     
     #https://s3.amazonaws.com/google-landmark/train/images_000.tar
