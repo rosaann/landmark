@@ -10,6 +10,7 @@ import requests
 import urllib 
 import sys
 import time
+import os
 base = 'https://s3.amazonaws.com/google-landmark/train/'
 url=''
 img = ''
@@ -47,7 +48,14 @@ for i in range(500)[5:500]:
             url = base + img    
     
     print('downloading ', url)
-    download(url, 'images/' + img, callbackfunc)
+    for ti in range(5):
+        try:
+            download(url, 'images/' + img, callbackfunc)
+            break
+        except Exception as e:
+            file = 'images/' + img
+            if os.path.exists(file):              
+                os.remove(file)
     time.sleep(60)
     
     #https://s3.amazonaws.com/google-landmark/train/images_000.tar
