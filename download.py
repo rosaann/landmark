@@ -35,7 +35,7 @@ def callbackfunc(blocknum, blocksize, totalsize):
         #input('输入任意键继续...')
 def download(url, file,callbackfunc):
     urllib.request.urlretrieve(url, file, callbackfunc)
-for i in range(500)[5:500]:
+for i in range(500)[6:500]:
     if i < 10:
         img = 'images_00' + str(i) + '.tar'
         url = base + img       
@@ -56,6 +56,7 @@ for i in range(500)[5:500]:
             file = 'images/' + img
             if os.path.exists(file):              
                 os.remove(file)
+            time.sleep(60)
     time.sleep(60)
     
     #https://s3.amazonaws.com/google-landmark/train/images_000.tar
