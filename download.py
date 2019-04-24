@@ -11,6 +11,8 @@ import urllib
 import sys
 import time
 import os
+import socket
+socket.setdefaulttimeout(30)
 base = 'https://s3.amazonaws.com/google-landmark/train/'
 url=''
 img = ''
@@ -35,7 +37,7 @@ def callbackfunc(blocknum, blocksize, totalsize):
         #input('输入任意键继续...')
 def download(url, file,callbackfunc):
     urllib.request.urlretrieve(url, file, callbackfunc)
-for i in range(500)[58:500]:
+for i in range(500)[69:500]:
     if i < 10:
         img = 'images_00' + str(i) + '.tar'
         url = base + img       
