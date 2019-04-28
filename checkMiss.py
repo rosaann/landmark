@@ -17,4 +17,9 @@ for path in paths:
     path = path.replace('.tar', '')
     path_idx_list.append(int(path))
     
-print(path_idx_list)
+miss = []    
+for i in range(500):
+    if i not in path_idx_list:
+        miss.append(i)
+        
+print(miss)
