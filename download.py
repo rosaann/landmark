@@ -38,7 +38,8 @@ def callbackfunc(blocknum, blocksize, totalsize):
 def download(url, file,callbackfunc):
     urllib.request.urlretrieve(url, file, callbackfunc)
 
-miss = [66, 200, 203, 204, 205, 207, 269, 321, 322, 337, 341, 355, 356, 360, 362, 416, 485, 499]
+#miss = [66, 200, 203, 204, 205, 207, 269, 321, 322, 337, 341, 355, 356, 360, 362, 416, 485, 499]
+miss = [0, 203, 204, 205, 207, 321]
 #for i in range(500)[69:500]:
 for i in miss:
     if i < 10:
