@@ -11,10 +11,10 @@ basePath = './images/'
 paths = os.listdir(basePath)
 path_idx_list = []
 for path in paths:
-    path.replace('images_00', '')
-    path.replace('images_0', '')
-    path.replace('images_', '')
-    path.replace('.tar', '')
+    path = path.replace('images_00', '')
+    path = path.replace('images_0', '')
+    path = path.replace('images_', '')
+    path = path.replace('.tar', '')
     path_idx_list.append(int(path))
     
 print(path_idx_list)
