@@ -9,4 +9,12 @@ Created on Sun Apr 28 09:17:37 2019
 import os
 basePath = './images/'
 paths = os.listdir(basePath)
-print(paths)
+path_idx_list = []
+for path in paths:
+    path.replace('images_00', '')
+    path.replace('images_0', '')
+    path.replace('images_', '')
+    path.replace('.tar', '')
+    path_idx_list.append(int(path))
+    
+print(path_idx_list)
