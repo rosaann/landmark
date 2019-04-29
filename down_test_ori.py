@@ -54,9 +54,9 @@ def DownloadImage(key_url):
 
 
 def Run():
-  if len(sys.argv) != 3:
-    print('Syntax: %s <data_file.csv> <output_dir/>' % sys.argv[0])
-    sys.exit(0)
+#  if len(sys.argv) != 3:
+#    print('Syntax: %s <data_file.csv> <output_dir/>' % sys.argv[0])
+#    sys.exit(0)
  # (data_file, out_dir) = sys.argv[1:]
   data_file = 'data/test_csv/test.csv'
   if not os.path.exists(out_dir):
