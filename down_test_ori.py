@@ -13,6 +13,7 @@ from PIL import Image
 from io import BytesIO
 from urllib.request import urlopen
 import time
+import tqdm
 
 def ParseData(data_file):
   csvfile = open(data_file, 'r')
@@ -64,8 +65,10 @@ def Run():
     os.mkdir(out_dir)
 
   key_url_list = ParseData(data_file)
-  pool = multiprocessing.Pool(processes=1)
-  pool.map(DownloadImage, key_url_list)
+  for key_url in tqdm.tqdm(key_url_list):
+      DownloadImage(key_url)
+  #pool = multiprocessing.Pool(processes=1)
+  #pool.map(DownloadImage, key_url_list)
 
 
 if __name__ == '__main__':
