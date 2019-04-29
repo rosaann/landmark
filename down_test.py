@@ -20,8 +20,9 @@ import sys, os, multiprocessing, csv
 from PIL import Image
 from io import BytesIO
 from urllib.request import urlopen
-
-
+from download import download_file
+import tqdm
+import time
 def ParseData(data_file):
   csvfile = open(data_file, 'r')
   csvreader = csv.reader(csvfile)
@@ -51,7 +52,7 @@ def DownloadImage(key_url):
   except:
     print('Warning: Failed to parse image %s' % key)
     return
-
+    
 def Run():
  # if len(sys.argv) != 3:
  #   print('Syntax: %s <data_file.csv> <output_dir/>' % sys.argv[0])
@@ -64,8 +65,25 @@ def Run():
     os.mkdir(out_dir)
 
   key_url_list = ParseData(data_file)
-  pool = multiprocessing.Pool(processes=10)
-  pool.map(DownloadImage, key_url_list)
+  for key, url in tqdm.tqdm(key_url_list):
+      filename = os.path.join(out_dir, '%s.jpg' % key)
+
+      if os.path.exists(filename):
+          print('Image %s already exists. Skipping download.' % filename)
+          continue
+      
+      for ti in range(5):
+          try:
+            download_file(url, filename)
+            break
+          except Exception as e:
+           # file = 'data/train_images/' + img
+            if os.path.exists(filename):              
+                os.remove(filename)
+            time.sleep(10)
+      time.sleep(3)
+  #pool = multiprocessing.Pool(processes=10)
+  #pool.map(DownloadImage, key_url_list)
 
 
 if __name__ == '__main__':
