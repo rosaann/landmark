@@ -34,7 +34,7 @@ download_check_and_extract() {
   elif [[ "$OSTYPE" == "darwin"* ]]; then
     images_md5="$(md5 -r "$images_file_name")"
   fi
-  md5_1="$(cut -d' ' -f1<<<"$images_md5")"
+ # md5_1="$(cut -d' ' -f1<<<"$images_md5")"
   md5_2="$(cut -d' ' -f1<<<cat "$images_md5_file_name")"
   if [[ "$md5_1" != "" && "$md5_1" = "$md5_2" ]]; then
     tar -xf ./$images_file_name
