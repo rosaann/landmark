@@ -14,7 +14,7 @@ from io import BytesIO
 from urllib.request import urlopen
 import time
 import tqdm
-
+import urllib.request
 def ParseData(data_file):
   csvfile = open(data_file, 'r')
   csvreader = csv.reader(csvfile)
@@ -33,8 +33,9 @@ def DownloadImage(key_url):
   for ti in range(5):
     try:
       print('link Image %s .' % key)
-      response = urlopen(url)
-      image_data = response.read()
+      #response = urlopen(url)
+      #image_data = response.read()
+      image_data = urllib.request.urlopen(url).read()
       break
     except:
       print('Warning: Could not download image %s from %s' % (key, url))
