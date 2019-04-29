@@ -42,7 +42,7 @@ def download_file(url, file,callbackfunc=callbackfunc):
 #miss = [66, 200, 203, 204, 205, 207, 269, 321, 322, 337, 341, 355, 356, 360, 362, 416, 485, 499]
 def run():
   miss = [0, 203, 204, 205, 207, 321]
-  for i in range(500)[0:500]:
+  for i in range(500)[6:500]:
 #  for i in miss:
     if i < 10:
         img = 'md5.images_00' + str(i) + '.txt'
@@ -65,7 +65,7 @@ def run():
             if os.path.exists(file):              
                 os.remove(file)
             time.sleep(30)
-    time.sleep(30)
+    time.sleep(3)
     
     #https://s3.amazonaws.com/google-landmark/train/images_000.tar
 run()
