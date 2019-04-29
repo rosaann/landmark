@@ -28,9 +28,9 @@ def ParseData(data_file):
   key_url_list = [line[:2] for line in csvreader]
   return key_url_list[1:]  # Chop off header
 
-
+out_dir = './data/test_images'
 def DownloadImage(key_url):
-  out_dir = './test_images'
+  
   (key, url) = key_url
   filename = os.path.join(out_dir, '%s.jpg' % key)
 
@@ -56,14 +56,14 @@ def Run():
  #   print('Syntax: %s <data_file.csv> <output_dir/>' % sys.argv[0])
  #   sys.exit(0)
  # (data_file, out_dir) = sys.argv[1:]
-  data_file = './google-landmarks-dataset.zip'
-  out_dir = './test_images'
+  data_file = './test_csv/test.csv'
+  #out_dir = './test_images'
 
   if not os.path.exists(out_dir):
     os.mkdir(out_dir)
 
   key_url_list = ParseData(data_file)
-  pool = multiprocessing.Pool(processes=50)
+  pool = multiprocessing.Pool(processes=10)
   pool.map(DownloadImage, key_url_list)
 
 
