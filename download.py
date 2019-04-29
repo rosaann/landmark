@@ -14,6 +14,7 @@ import os
 import socket
 socket.setdefaulttimeout(30)
 base = 'https://s3.amazonaws.com/google-landmark/train/'
+base = 'https://s3.amazonaws.com/google-landmark/md5sum/train/'
 url=''
 img = ''
 def callbackfunc(blocknum, blocksize, totalsize):
@@ -41,29 +42,30 @@ def download_file(url, file,callbackfunc=callbackfunc):
 #miss = [66, 200, 203, 204, 205, 207, 269, 321, 322, 337, 341, 355, 356, 360, 362, 416, 485, 499]
 def run():
   miss = [0, 203, 204, 205, 207, 321]
-#for i in range(500)[69:500]:
-  for i in miss:
+  for i in range(500)[0:500]:
+#  for i in miss:
     if i < 10:
-        img = 'images_00' + str(i) + '.tar'
+        img = 'md5.images_00' + str(i) + '.txt'
         url = base + img       
     else :
         if i < 100:
-            img = 'images_0' + str(i) + '.tar'
+            img = 'md5.images_0' + str(i) + '.txt'
             url = base + img    
         else:
-            img = 'images_' + str(i) + '.tar'
+            img = 'md5.images_' + str(i) + '.txt'
             url = base + img    
     
     print('downloading ', url)
     for ti in range(5):
         try:
-            download_file(url, 'images/' + img, callbackfunc)
+            download_file(url, 'data/train_images/' + img, callbackfunc)
             break
         except Exception as e:
-            file = 'images/' + img
+            file = 'data/train_images/' + img
             if os.path.exists(file):              
                 os.remove(file)
-            time.sleep(60)
-    time.sleep(60)
+            time.sleep(30)
+    time.sleep(30)
     
     #https://s3.amazonaws.com/google-landmark/train/images_000.tar
+run()
