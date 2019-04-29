@@ -7,4 +7,4 @@ Created on Mon Apr 29 11:14:16 2019
 """
 
 from download import download_file
-download_file('https://s3.amazonaws.com/google-landmark/metadata/train.csv', './')
+download_file('https://s3.amazonaws.com/google-landmark/metadata/train.csv', './train.csv')
