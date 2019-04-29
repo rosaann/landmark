@@ -31,7 +31,7 @@ def DownloadImage(key_url):
     return
   for ti in range(5):
     try:
-      print('Image %s .' % key)
+      print('link Image %s .' % key)
       response = urlopen(url)
       image_data = response.read()
       break
@@ -48,6 +48,7 @@ def DownloadImage(key_url):
 
   try:
     pil_image.save(filename, format='JPEG', quality=90)
+    print('save Image %s .----' % key)
   except:
     print('Warning: Failed to save image %s' % filename)
     return
