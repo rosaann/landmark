@@ -32,6 +32,7 @@ out_dir = './data/test_images'
 def DownloadImage(key_url):
   
   (key, url) = key_url
+  print('key ', key)
   filename = os.path.join(out_dir, '%s.jpg' % key)
 
   if os.path.exists(filename):

@@ -68,4 +68,5 @@ def run():
     time.sleep(3)
     
     #https://s3.amazonaws.com/google-landmark/train/images_000.tar
-run()
+if __name__ == '__main__':
+    run()
