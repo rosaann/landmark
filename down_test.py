@@ -55,7 +55,7 @@ def Run():
  # if len(sys.argv) != 3:
  #   print('Syntax: %s <data_file.csv> <output_dir/>' % sys.argv[0])
  #   sys.exit(0)
-  (data_file, out_dir) = sys.argv[1:]
+ # (data_file, out_dir) = sys.argv[1:]
   data_file = './google-landmarks-dataset.zip'
   out_dir = './test_images'
 
