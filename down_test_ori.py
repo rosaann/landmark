@@ -10,8 +10,9 @@
 
 import sys, os, multiprocessing, urllib2, csv
 from PIL import Image
-from StringIO import StringIO
-
+from io import BytesIO
+from urllib.request import urlopen
+import time
 
 def ParseData(data_file):
   csvfile = open(data_file, 'r')
@@ -28,29 +29,25 @@ def DownloadImage(key_url):
   if os.path.exists(filename):
     print('Image %s already exists. Skipping download.' % filename)
     return
+  for ti in range(5):
+    try:
+      print('Image %s .' % key)
+      response = urlopen(url)
+      image_data = response.read()
+      break
+    except:
+      print('Warning: Could not download image %s from %s' % (key, url))
+      time.sleep(10)
 
   try:
-    print('Image %s .' % key)
-    response = urllib2.urlopen(url)
-    image_data = response.read()
-  except:
-    print('Warning: Could not download image %s from %s' % (key, url))
-    return
-
-  try:
-    pil_image = Image.open(StringIO(image_data))
+    pil_image = Image.open(BytesIO(image_data))
   except:
     print('Warning: Failed to parse image %s' % key)
     return
 
-  try:
-    pil_image_rgb = pil_image.convert('RGB')
-  except:
-    print('Warning: Failed to convert image %s to RGB' % key)
-    return
 
   try:
-    pil_image_rgb.save(filename, format='JPEG', quality=90)
+    pil_image.save(filename, format='JPEG', quality=90)
   except:
     print('Warning: Failed to save image %s' % filename)
     return
