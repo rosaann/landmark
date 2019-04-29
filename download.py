@@ -35,7 +35,7 @@ def callbackfunc(blocknum, blocksize, totalsize):
     if percent == 100:
         print('')
         #input('输入任意键继续...')
-def download(url, file,callbackfunc):
+def download_file(url, file,callbackfunc=callbackfunc):
     urllib.request.urlretrieve(url, file, callbackfunc)
 
 #miss = [66, 200, 203, 204, 205, 207, 269, 321, 322, 337, 341, 355, 356, 360, 362, 416, 485, 499]
@@ -56,7 +56,7 @@ for i in miss:
     print('downloading ', url)
     for ti in range(5):
         try:
-            download(url, 'images/' + img, callbackfunc)
+            download_file(url, 'images/' + img, callbackfunc)
             break
         except Exception as e:
             file = 'images/' + img
