@@ -28,7 +28,7 @@ download_check_and_extract() {
   images_md5_url=https://s3.amazonaws.com/google-landmark/md5sum/train/$images_md5_file_name
   echo "Downloading $images_file_name..."
  # curl -Os $images_tar_url > /dev/null
-  curl -Os $images_md5_url > ./data/train_images/
+ # curl -Os $images_md5_url > ./data/train_images/
   if [[ "$OSTYPE" == "linux-gnu" ]]; then
     images_md5="$(md5sum "$images_file_name")"
   elif [[ "$OSTYPE" == "darwin"* ]]; then
