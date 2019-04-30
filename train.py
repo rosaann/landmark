@@ -118,7 +118,7 @@ def train_single_epoch(config, model, dataloader, criterion, optimizer,
         logits, aux_logits, probabilities = inference(model, images)
         print('logits ', logits)
         print('labels ', labels)
-        loss = criterion(logits, labels.float())
+        loss = criterion(logits, labels)
         if aux_logits is not None:
             aux_loss = criterion(aux_logits, labels.float())
             loss = loss + 0.4 * aux_loss
