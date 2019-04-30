@@ -56,16 +56,10 @@ class DefaultDataset(Dataset):
         filename = example[1]
         image = misc.imread(filename)
 
-        label = [0 for _ in range(28)]
-        for l in example[2]:
-            label[l] = 1
-        label = np.array(label)
-
         if self.transform is not None:
             image = self.transform(image)
 
         return {'image': image,
-                'label': label,
                 'key': example[0]}
 
     def __len__(self):

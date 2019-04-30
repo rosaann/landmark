@@ -216,7 +216,7 @@ def run(config):
     print('from checkpoint: {} last epoch:{}'.format(checkpoint, last_epoch))
     scheduler = get_scheduler(config, optimizer, last_epoch)
     
-    dataloaders = {split:get_dataloader(config, split, get_transform(config, split))
+    dataloaders = {split:get_dataloader(config, split, None)
                    for split in ['train', 'val']}
     
 
