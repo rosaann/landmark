@@ -21,7 +21,7 @@ eval:
   batch_size: 4
 
 loss:
-  name: 'binary_focal_loss'
+  name: 'cross_entropy'
 
 optimizer:
   name: 'adam'

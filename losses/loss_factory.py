@@ -22,7 +22,7 @@ def binary_focal_loss(gamma=2, **_):
 
 
 def cross_entropy(**_):
-    return torch.nn.BCEWithLogitsLoss()
+    return torch.nn.CrossEntropyLoss()
 
 
 def get_loss(config):
