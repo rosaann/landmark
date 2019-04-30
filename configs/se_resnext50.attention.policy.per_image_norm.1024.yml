@@ -32,6 +32,6 @@ transform:
   name: 'policy_transform'
   num_preprocessor: 4
   params:
-    policies: 'data/best_policy.data'
+    policies: 'best_policy.data'
     per_image_norm: True
     size: 1024
