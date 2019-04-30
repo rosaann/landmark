@@ -109,7 +109,7 @@ def train_single_epoch(config, model, dataloader, criterion, optimizer,
     tbar = tqdm.tqdm(enumerate(dataloader), total=total_step)
     for i, data in tbar:
         images = data['image']
-        labels = data['label']
+        labels = data['key']
     #    print('images ', images.shape)
    #     print('labels ', labels)
         if torch.cuda.is_available():
