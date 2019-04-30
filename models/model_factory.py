@@ -224,7 +224,7 @@ def get_resnet18(num_classes=28, **_):
 
 
 def get_senet(model_name='se_resnext50', num_classes=203094, **_):
-    model = pretrainedmodels.__dict__[model_name](num_classes=203094)
+    model = pretrainedmodels.__dict__[model_name](num_classes=1000)
     conv1 = model.layer0.conv1
     model.layer0.conv1 = nn.Conv2d(in_channels=3,
                                    out_channels=conv1.out_channels,
