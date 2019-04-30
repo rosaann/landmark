@@ -30,6 +30,10 @@ def DownloadImage(key_url):
   if os.path.exists(filename):
     print('Image %s already exists. Skipping download.' % filename)
     return
+  
+  if len(url) < 10:
+      print('Image %s url none. Skipping download.' % filename)
+      return
   for ti in range(5):
     try:
       print('link Image %s .' % key)
