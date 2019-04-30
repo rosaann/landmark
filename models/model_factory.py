@@ -201,12 +201,12 @@ def get_resnet34(num_classes=203094, **_):
     return model
 
 
-def get_resnet18(num_classes=28, **_):
+def get_resnet18(num_classes=203094, **_):
     model_name = 'resnet18'
-    model = pretrainedmodels.__dict__[model_name](num_classes=203094, pretrained='imagenet')
+    model = pretrainedmodels.__dict__[model_name](num_classes=1000, pretrained='imagenet')
     print(model)
     conv1 = model.conv1
-    model.conv1 = nn.Conv2d(in_channels=4,
+    model.conv1 = nn.Conv2d(in_channels=3,
                             out_channels=conv1.out_channels,
                             kernel_size=conv1.kernel_size,
                             stride=conv1.stride,
@@ -214,8 +214,8 @@ def get_resnet18(num_classes=28, **_):
                             bias=conv1.bias)
 
     # copy pretrained weights
-    model.conv1.weight.data[:,:3,:,:] = conv1.weight.data
-    model.conv1.weight.data[:,3:,:,:] = conv1.weight.data[:,:1,:,:]
+  #  model.conv1.weight.data[:,:3,:,:] = conv1.weight.data
+  #  model.conv1.weight.data[:,3:,:,:] = conv1.weight.data[:,:1,:,:]
 
     model.avgpool = nn.AdaptiveAvgPool2d(1)
     in_features = model.last_linear.in_features
