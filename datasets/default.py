@@ -47,7 +47,7 @@ class DefaultDataset(Dataset):
             
 
         df_labels['filepath'] = df_labels['id'].transform(to_filepath)
-        print(df_labels)
+        #print(df_labels)
         return df_labels
 
     def load_examples(self):
@@ -62,7 +62,7 @@ class DefaultDataset(Dataset):
 
         if self.transform is not None:
             image = self.transform(image)
-
+        print('filename ', filename, ' key ', example[0])
         return {'image': image,
                 'key': example[0]}
 
