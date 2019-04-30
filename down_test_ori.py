@@ -45,7 +45,7 @@ def DownloadImage(key_url):
     pil_image = Image.open(BytesIO(image_data))
   except:
     print('Warning: Failed to parse image %s' % key)
-    return
+    
 
 
   try:
@@ -53,8 +53,9 @@ def DownloadImage(key_url):
     print('save Image %s .----' % key)
   except:
     print('Warning: Failed to save image %s' % filename)
-    return
-
+    
+  time.sleep(1)
+  
 
 def Run():
 #  if len(sys.argv) != 3:
