@@ -34,4 +34,4 @@ transform:
   params:
     policies: 'best_policy.data'
     per_image_norm: True
-    size: 512
+    size: 224
