@@ -62,7 +62,7 @@ class DefaultDataset(Dataset):
 
         if self.transform is not None:
             image = self.transform(image)
-        print('filename ', filename, ' key ', example[0])
+       # print('filename ', filename, ' key ', example[0])
         return {'image': image,
                 'key': example[0]}
 
