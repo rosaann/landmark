@@ -9,7 +9,7 @@ model:
   name: 'attention'
   params:
     cnn: 'se_resnext50'
-    attention_size: 16
+    attention_size: 32
 
 train:
   dir: './results/se_resnext50.attention.per_image_norm.1024'
@@ -34,4 +34,4 @@ transform:
   params:
     policies: 'best_policy.data'
     per_image_norm: True
-    size: 1024
+    size: 512
