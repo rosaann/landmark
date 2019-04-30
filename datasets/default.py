@@ -36,14 +36,18 @@ class DefaultDataset(Dataset):
         labels_path = os.path.join(self.dataset_dir, labels_path)
       #  print('labels_path ', labels_path)
         df_labels = pd.read_csv(labels_path)
-        print('df_labels ', df_labels)
+     #   print('df_labels ', df_labels)
         df_labels = df_labels.reset_index()
 
-        def to_filepath(v):          
-            return os.path.join(self.images_dir, v + '.jpg')
+        def to_filepath(v):
+            dir1 = v[0:1]
+            dir2 = v[1:2]
+            dir3 = v[2:3]
+            return os.path.join(self.images_dir,dir1,dir2,dir3, v + '.jpg')
             
 
         df_labels['filepath'] = df_labels['id'].transform(to_filepath)
+        print(df_labels)
         return df_labels
 
     def load_examples(self):

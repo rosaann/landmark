@@ -85,7 +85,7 @@ def evaluate_single_epoch(config, model, dataloader, criterion,
         log_dict['loss'] = sum(loss_list) / len(loss_list)
 
         if writer is not None:
-            for l in range(28):
+            for l in range(203094):
                 f1 = utils.metrics.f1_score(labels[:,l], predictions[:,l], 'binary')
                 writer.add_scalar('val/f1_{:02d}'.format(l), f1, epoch)
 
