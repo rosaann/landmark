@@ -55,7 +55,7 @@ class AttentionInceptionV3(nn.Module):
         self.aux_attention_size = aux_attention_size
 
         conv = self.cnn.Conv2d_1a_3x3.conv
-        self.cnn.Conv2d_1a_3x3.conv = nn.Conv2d(in_channels=4,
+        self.cnn.Conv2d_1a_3x3.conv = nn.Conv2d(in_channels=3,
                                                 out_channels=conv.out_channels,
                                                 kernel_size=conv.kernel_size,
                                                 stride=conv.stride,
@@ -63,8 +63,8 @@ class AttentionInceptionV3(nn.Module):
                                                 bias=conv.bias)
 
         # copy pretrained weights
-        self.cnn.Conv2d_1a_3x3.conv.weight.data[:,:3,:,:] = conv.weight.data
-        self.cnn.Conv2d_1a_3x3.conv.weight.data[:,3:,:,:] = conv.weight.data[:,:1,:,:]
+      #  self.cnn.Conv2d_1a_3x3.conv.weight.data[:,:3,:,:] = conv.weight.data
+      #  self.cnn.Conv2d_1a_3x3.conv.weight.data[:,3:,:,:] = conv.weight.data[:,:1,:,:]
 
         self.features_a = nn.Sequential(
             self.cnn.Conv2d_1a_3x3,
@@ -102,77 +102,77 @@ class AttentionInceptionV3(nn.Module):
 
     def forward(self, x):
         features_a = self.features_a(x)
-        print('features_a ', features_a.shape)
+     #   print('features_a ', features_a.shape)
         if self.training:
             if self.aux_attention_size != features_a.size(-1):
                 aux_features = self.aux_avgpool(features_a)
-                print('aux_features ', aux_features.shape)
+      #          print('aux_features ', aux_features.shape)
             else:
                 aux_features = features_a
             aux_logits = self.aux_linear(aux_features)
-            print('aux_logits ', aux_logits.shape)
+      #      print('aux_logits ', aux_logits.shape)
             assert aux_logits.size(1) == self.num_classes and \
                    aux_logits.size(2) == self.aux_attention_size and \
                    aux_logits.size(3) == self.aux_attention_size
             aux_logits_attention = self.aux_attention(aux_features)
-            print('aux_logits_attention ', aux_logits_attention.shape)
+      #      print('aux_logits_attention ', aux_logits_attention.shape)
             assert aux_logits_attention.size(1) == self.num_classes and \
                    aux_logits_attention.size(2) == self.aux_attention_size and \
                    aux_logits_attention.size(3) == self.aux_attention_size
             aux_logits_attention = aux_logits_attention.view(
                 -1, self.num_classes,
                 self.aux_attention_size * self.aux_attention_size)
-            print('aux_logits_attention-2 ', aux_logits_attention.shape)
+      #      print('aux_logits_attention-2 ', aux_logits_attention.shape)
 
             aux_attention = F.softmax(aux_logits_attention, dim=2)
-            print('aux_attention-1 ', aux_attention.shape)
+      #      print('aux_attention-1 ', aux_attention.shape)
             aux_attention = aux_attention.view(
                 -1, self.num_classes, self.aux_attention_size, self.aux_attention_size)
-            print('aux_attention-2 ', aux_attention.shape)
+      #      print('aux_attention-2 ', aux_attention.shape)
             aux_logits = aux_logits * aux_attention
-            print('aux_logits-1 ', aux_logits.shape)
+     #       print('aux_logits-1 ', aux_logits.shape)
             aux_logits = aux_logits.view(
                 -1, self.num_classes,
                 self.aux_attention_size * self.aux_attention_size)
-            print('aux_logits-2 ', aux_logits.shape)
+     #       print('aux_logits-2 ', aux_logits.shape)
             aux_logits = aux_logits.sum(2)
-            print('aux_logits-3 ', aux_logits.shape)
+     #       print('aux_logits-3 ', aux_logits.shape)
             aux_logits = aux_logits.view(-1, self.num_classes)
-            print('aux_logits-4 ', aux_logits.shape)
+     #       print('aux_logits-4 ', aux_logits.shape)
 
         features_b = self.features_b(features_a)
-        print('features_b ', features_b.shape)
+    #    print('features_b ', features_b.shape)
         if self.aux_attention_size != features_b.size(-1):
             features_b = self.avgpool(features_b)
-            print('features_b-1 ', features_b.shape)
+    #        print('features_b-1 ', features_b.shape)
         logits = self.last_linear(features_b)
-        print('logits ', logits.shape)
+    #    print('logits ', logits.shape)
         assert logits.size(1) == self.num_classes and \
                logits.size(2) == self.attention_size and \
                logits.size(3) == self.attention_size
 
         logits_attention = self.attention(features_b)
-        print('logits_attention ', logits_attention.shape)
+    #    print('logits_attention ', logits_attention.shape)
         assert logits_attention.size(1) == self.num_classes and \
                logits_attention.size(2) == self.attention_size and \
                logits_attention.size(3) == self.attention_size
         logits_attention = logits_attention.view(-1, self.num_classes, self.attention_size * self.attention_size)
-        print('logits_attention-1 ', logits_attention.shape)
+    #    print('logits_attention-1 ', logits_attention.shape)
         attention = F.softmax(logits_attention, dim=2)
-        print('attention ', attention.shape)
+    #    print('attention ', attention.shape)
         attention = attention.view(-1, self.num_classes, self.attention_size, self.attention_size)
-        print('attention-1 ', attention.shape)
+    #    print('attention-1 ', attention.shape)
 
         logits = logits * attention
-        print('logits-1 ', logits.shape)
+    #    print('logits-1 ', logits.shape)
         logits = logits.view(-1, self.num_classes, self.attention_size * self.attention_size).sum(2).view(-1, self.num_classes)
-        print('logits-2 ', logits.shape)
+    #    print('logits-2 ', logits.shape)
         if self.training:
             return logits, aux_logits
         return logits
 
 
-def get_attention_inceptionv3(num_classes=28, **kwargs):
+def get_attention_inceptionv3(num_classes=203094, **kwargs):
     return AttentionInceptionV3(num_classes=num_classes, **kwargs)
 
 
