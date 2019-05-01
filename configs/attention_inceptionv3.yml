@@ -8,8 +8,7 @@ data:
 model:
   name: 'attention_inceptionv3'
   params:
-    cnn: 'resnet18'
-    attention_size: 32
+    attention_size: 8
 
 train:
   dir: './results/attention_inceptionv3'
