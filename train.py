@@ -120,7 +120,7 @@ def train_single_epoch(config, model, dataloader, criterion, optimizer,
         print('labels ', labels)
         loss = criterion(logits, labels)
         if aux_logits is not None:
-            aux_loss = criterion(aux_logits, labels.float())
+            aux_loss = criterion(aux_logits, labels)
             loss = loss + 0.4 * aux_loss
         log_dict['loss'] = loss.item()
 
