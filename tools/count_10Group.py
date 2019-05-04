@@ -27,7 +27,7 @@ def main():
     total = len(landmark_id_list)   
     print('landmark_len ', total)
     landmark_id_list = sorted(landmark_id_list.items(),key=lambda x:x[1])  
-     print ('land ', landmark_id_list)   
+    print ('land ', landmark_id_list)   
         
 if __name__ == '__main__':
   main()
