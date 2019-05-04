@@ -44,7 +44,7 @@ def main():
             key_group_list.append(key_group)
             print('group ', i / group_item_num, ' len ', len(key_group))
     key_group_list[-1].extend(key_group)
-    print('group last', ' len ', len(key_group))
+    print('group last', ' len ', len(key_group_list[-1]))
             
          
         
