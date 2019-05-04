@@ -172,7 +172,7 @@ class AttentionInceptionV3(nn.Module):
         return logits
 
 
-def get_attention_inceptionv3(num_classes=203094, **kwargs):
+def get_attention_inceptionv3(num_classes=137133, **kwargs):
     return AttentionInceptionV3(num_classes=num_classes, **kwargs)
 
 
