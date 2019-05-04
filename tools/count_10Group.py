@@ -27,13 +27,18 @@ def main():
     
     total = len(landmark_id_list)   
     print('landmark_len ', total)
-  #  landmark_id_list = sorted(landmark_id_list.items())
-    keys = landmark_id_list.keys()
-    values = []
-    for key in keys:
-        values.append(landmark_id_list[key])
-    plt.bar(keys, values)
-    plt.savefig("assign.jpg")
+  #  keys = landmark_id_list.keys()
+  #  values = []
+  #  for key in keys:
+  #      values.append(landmark_id_list[key])
+        
+    fileObject = open('assign.txt', 'w')
+    for t in landmark_id_list.items():
+        fileObject.write(t)
+        fileObject.write('\n')
+    fileObject.close()
+  #  plt.bar(keys, values)
+  #  plt.savefig("assign.jpg")
     print ('land ', landmark_id_list)   
         
 if __name__ == '__main__':
