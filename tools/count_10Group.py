@@ -10,6 +10,8 @@ import tqdm
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
+import random
+
 
 def main():
     data_dir = './data'
@@ -27,19 +29,29 @@ def main():
     
     total = len(landmark_id_list)   
     print('landmark_len ', total)
-  #  keys = landmark_id_list.keys()
-  #  values = []
-  #  for key in keys:
-  #      values.append(landmark_id_list[key])
+    keys = landmark_id_list.keys()
+    random.shuffle (keys )
+
+    group_item_num = 1000
+    key_group_list = []
+    for i, key in enumerate( keys):
+        if i % group_item_num == 0 and (i / 1000) < 203:
+            key_group = []
+        key_group.append(key)
+        if i % group_item_num == (group_item_num - 1) and (i / 1000) < 203:
+            key_group_list.append(key_group)
+            print('group ', i / group_item_num, ' len ', len(key_group))
+            
+         
         
-    fileObject = open('assign.txt', 'w')
-    for t in landmark_id_list.items():
-        fileObject.write(str(t))
-        fileObject.write('\n')
-    fileObject.close()
+  #  fileObject = open('assign.txt', 'w')
+  #  for t in landmark_id_list.items():
+  #      fileObject.write(str(t))
+  #      fileObject.write('\n')
+  #  fileObject.close()
   #  plt.bar(keys, values)
   #  plt.savefig("assign.jpg")
-    print ('land ', landmark_id_list)   
+  #  print ('land ', landmark_id_list)   
         
 if __name__ == '__main__':
   main()
