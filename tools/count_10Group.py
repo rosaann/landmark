@@ -35,6 +35,7 @@ def main():
     group_item_num = 1000
     key_group_list = []
     group_num = len(keys) / group_item_num
+    key_group = []
     for i, key in enumerate( keys):
         if i % group_item_num == 0 and (i / group_item_num) < group_num:
             key_group = []
@@ -42,6 +43,8 @@ def main():
         if i % group_item_num == (group_item_num - 1) and (i / group_item_num) !=  group_num:
             key_group_list.append(key_group)
             print('group ', i / group_item_num, ' len ', len(key_group))
+    key_group_list.append(key_group)
+    print('group last', ' len ', len(key_group))
             
          
         
