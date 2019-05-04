@@ -27,7 +27,7 @@ def main():
     
     total = len(landmark_id_list)   
     print('landmark_len ', total)
-    landmark_id_list = sorted(landmark_id_list.items())
+  #  landmark_id_list = sorted(landmark_id_list.items())
     keys = landmark_id_list.keys()
     values = []
     for key in keys:
