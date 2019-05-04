@@ -9,6 +9,7 @@ Created on Fri May  3 22:23:15 2019
 import tqdm
 import pandas as pd
 import os
+import matplotlib.pyplot as plt
 
 def main():
     data_dir = './data'
@@ -26,7 +27,9 @@ def main():
     
     total = len(landmark_id_list)   
     print('landmark_len ', total)
-    landmark_id_list = sorted(landmark_id_list.items(),key=lambda x:x[1])  
+    landmark_id_list = sorted(landmark_id_list.items())
+    plt.bar(range(len(landmark_id_list)), landmark_id_list)
+    plt.savefig("assign.jpg")
     print ('land ', landmark_id_list)   
         
 if __name__ == '__main__':
