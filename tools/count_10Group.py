@@ -34,11 +34,12 @@ def main():
 
     group_item_num = 1000
     key_group_list = []
+    group_num = len(keys) / group_item_num
     for i, key in enumerate( keys):
-        if i % group_item_num == 0 and (i / 1000) < 203:
+        if i % group_item_num == 0 and (i / group_item_num) < group_num:
             key_group = []
         key_group.append(key)
-        if i % group_item_num == (group_item_num - 1) and (i / 1000) < 203:
+        if i % group_item_num == (group_item_num - 1) and (i / group_item_num) !=  group_num:
             key_group_list.append(key_group)
             print('group ', i / group_item_num, ' len ', len(key_group))
             
