@@ -34,7 +34,7 @@ def main():
         
     fileObject = open('assign.txt', 'w')
     for t in landmark_id_list.items():
-        fileObject.write(t)
+        fileObject.write(str(t))
         fileObject.write('\n')
     fileObject.close()
   #  plt.bar(keys, values)
