@@ -28,7 +28,11 @@ def main():
     total = len(landmark_id_list)   
     print('landmark_len ', total)
     landmark_id_list = sorted(landmark_id_list.items())
-    plt.bar(range(len(landmark_id_list)), landmark_id_list)
+    keys = landmark_id_list.keys()
+    values = []
+    for key in keys:
+        values.append(landmark_id_list[key])
+    plt.bar(keys, values)
     plt.savefig("assign.jpg")
     print ('land ', landmark_id_list)   
         
