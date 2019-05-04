@@ -68,8 +68,8 @@ class DefaultDataset(Dataset):
         out = []
         for _, row in self.df_labels.iterrows():
             key_idx = self.key2idx[row['landmark_id']]
-            if key_idx > 2000:
-                key_idx = 2001
+            if key_idx > 1000:
+                key_idx = 1001
             out.append((key_idx, row['filepath']))
         return out
                 
