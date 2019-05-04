@@ -43,7 +43,7 @@ def main():
         if i % group_item_num == (group_item_num - 1) and (i / group_item_num) !=  group_num:
             key_group_list.append(key_group)
             print('group ', i / group_item_num, ' len ', len(key_group))
-    key_group_list.append(key_group)
+    key_group_list[-1].extend(key_group)
     print('group last', ' len ', len(key_group))
             
          
