@@ -6,12 +6,12 @@ data:
     num_fold: 5
 
 model:
-  name: 'attention'
+  name: 'attention_inceptionv3'
   params:
     attention_size: 8
 
 train:
-  dir: './results/attention'
+  dir: './results/attention_inceptionv3'
   batch_size: 1
   num_epochs: 23
   num_grad_acc: 4
