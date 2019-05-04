@@ -180,11 +180,11 @@ def get_attention(num_classes=137133, **kwargs):
     return Attention(num_classes=num_classes, **kwargs)
 
 
-def get_resnet34(num_classes=203094, **_):
+def get_resnet34(num_classes=137133, **_):
     model_name = 'resnet34'
-    model = pretrainedmodels.__dict__[model_name](num_classes=203094, pretrained='imagenet')
+    model = pretrainedmodels.__dict__[model_name](num_classes=1000, pretrained='imagenet')
     conv1 = model.conv1
-    model.conv1 = nn.Conv2d(in_channels=4,
+    model.conv1 = nn.Conv2d(in_channels=3,
                             out_channels=conv1.out_channels,
                             kernel_size=conv1.kernel_size,
                             stride=conv1.stride,
@@ -192,8 +192,8 @@ def get_resnet34(num_classes=203094, **_):
                             bias=conv1.bias)
 
     # copy pretrained weights
-    model.conv1.weight.data[:,:3,:,:] = conv1.weight.data
-    model.conv1.weight.data[:,3:,:,:] = conv1.weight.data[:,:1,:,:]
+   # model.conv1.weight.data[:,:3,:,:] = conv1.weight.data
+   # model.conv1.weight.data[:,3:,:,:] = conv1.weight.data[:,:1,:,:]
 
     model.avgpool = nn.AdaptiveAvgPool2d(1)
     in_features = model.last_linear.in_features
