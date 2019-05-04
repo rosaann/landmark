@@ -65,8 +65,14 @@ class DefaultDataset(Dataset):
         return df_labels
 
     def load_examples(self):
-        return [(self.key2idx[row['landmark_id']], row['filepath'])
-                for _, row in self.df_labels.iterrows()]
+        out = []
+        for _, row in self.df_labels.iterrows():
+            key_idx = self.key2idx[row['landmark_id']]
+            if key_idx > 2000:
+                key_idx = 2001
+            out.append((key_idx, row['filepath']))
+        return out
+                
 
     def __getitem__(self, index):
         example = self.examples[index]

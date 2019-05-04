@@ -30,7 +30,8 @@ def main():
   
     filter_list = []
     keys = landmark_id_list.keys()
-    for key in keys:
+    
+    for i, key in enumerate (keys):
         value = landmark_id_list[key]
         if value >= 5:
            filter_list.append(key)
