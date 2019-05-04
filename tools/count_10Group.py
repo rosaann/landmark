@@ -29,7 +29,7 @@ def main():
     
     total = len(landmark_id_list)   
     print('landmark_len ', total)
-    keys = landmark_id_list.keys()
+    keys = list(landmark_id_list.keys())
     random.shuffle (keys )
 
     group_item_num = 1000
