@@ -10,9 +10,9 @@ import torch.nn.functional as F
 import torchvision.models
 import pretrainedmodels
 
-
+#203094
 class Attention(nn.Module):
-    def __init__(self, num_classes=203094, cnn='resnet34', attention_size=8):
+    def __init__(self, num_classes=137133, cnn='resnet34', attention_size=8):
         super().__init__()
         self.num_classes = num_classes
         self.cnn = globals().get('get_' + cnn)()
@@ -176,7 +176,7 @@ def get_attention_inceptionv3(num_classes=203094, **kwargs):
     return AttentionInceptionV3(num_classes=num_classes, **kwargs)
 
 
-def get_attention(num_classes=203094, **kwargs):
+def get_attention(num_classes=137133, **kwargs):
     return Attention(num_classes=num_classes, **kwargs)
 
 
