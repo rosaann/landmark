@@ -47,7 +47,7 @@ def genkeyGroups():
   #  print('group last', ' len ', len(key_group_list[-1]))
     fileObject = open(os.path.join(data_dir, 'key_groups.txt'), 'w')
     for ip in key_group_list:
-        fileObject.write(ip)
+        fileObject.write(str(ip))
         fileObject.write('\n')
     fileObject.close()
 def main():
