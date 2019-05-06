@@ -46,12 +46,12 @@ def genkeyGroups():
     key_group_list[-1].extend(key_group)
   #  print('group last', ' len ', len(key_group_list[-1]))
     fileObject = open(os.path.join(data_dir, 'key_groups.txt'), 'w')
-    for ip in key_group_list:
-        fileObject.write(str(ip))
-        fileObject.write('\n')
+  #  for ip in key_group_list:
+    fileObject.write(str(key_group_list))
+    fileObject.write('\n')
     fileObject.close()
 def main():
-   # genkeyGroups()
+    genkeyGroups()
     # key_group_list 每组group_item_num 个key
     key_group_list = []
     with open(os.path.join(data_dir, 'key_groups.txt'), 'r') as f: 
