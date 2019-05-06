@@ -100,7 +100,7 @@ def gen_data_cvs_for_group():
                 key_not_data.append((img_id, landmark_id))
                 
         random.shuffle(key_not_data)
-        key_in_data.expend(key_not_data[:int(len(key_in_data) / 2)])
+        key_in_data.extend(key_not_data[:int(len(key_in_data) / 2)])
         random.shuffle(key_in_data)
         write_train_val_to_csv(key_in_data, gi)
 def main():
