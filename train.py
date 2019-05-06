@@ -207,7 +207,7 @@ def run(config):
     
     for train_file in train_filenames:
         gi_tr = train_file.replace('data_train_group_', '')
-        gi_tr = gi_tr.repalce('.csv', '')
+        gi_tr = gi_tr.replace('.csv', '')
         group_idx = int(gi_tr)
         utils.prepare_train_directories(config)
         
