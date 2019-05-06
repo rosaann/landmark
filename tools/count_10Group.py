@@ -88,7 +88,7 @@ def gen_data_cvs_for_group():
          
     df_train = pd.read_csv(os.path.join(data_dir, 'train.csv'))
     num = df_train.shape[0]
-    for gi, key_group in enumerate( key_group_list):
+    for gi, key_group in enumerate( tqdm.tqdm(key_group_list)):
         key_in_data = []
         key_not_data = []
         for i in tqdm.tqdm(range(num)):
