@@ -12,9 +12,9 @@ import os
 import matplotlib.pyplot as plt
 import random
 import ast
-
+data_dir = './data'
 def genkeyGroups():
-    data_dir = './data'
+    
     df_train = pd.read_csv(os.path.join(data_dir, 'train.csv'))
     num = df_train.shape[0]
     print('total ', num)
@@ -51,10 +51,10 @@ def genkeyGroups():
         fileObject.write('\n')
     fileObject.close()
 def main():
-    genkeyGroups()
+   # genkeyGroups()
     # key_group_list 每组group_item_num 个key
     key_group_list = []
-    with open("file.txt", 'r') as f: 
+    with open(os.path.join(data_dir, 'key_groups.txt'), 'r') as f: 
          key_group_list = ast.literal_eval(f.read())
     for key_group in key_group_list:
         print('key_group ', len(key_group))
