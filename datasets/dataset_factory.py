@@ -14,17 +14,17 @@ from .small import SmallDataset
 from .test import TestDataset
 
 
-def get_dataset(config, split, transform=None, last_epoch=-1):
+def get_dataset(config,group_idx, split, transform=None, last_epoch=-1):
     f = globals().get(config.name)
 
-    return f(config.dir,
+    return f(group_idx,
              split=split,
              transform=transform,
              **config.params)
 
 
-def get_dataloader(config, split, transform=None, **_):
-    dataset = get_dataset(config.data, split, transform)
+def get_dataloader(config, group_idx, split, transform=None, **_):
+    dataset = get_dataset(config.data, group_idx, split, transform)
 
     is_train = 'train' == split
     batch_size = config.train.batch_size if is_train else config.eval.batch_size

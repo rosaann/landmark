@@ -23,7 +23,7 @@ import utils
 import utils.config
 import utils.checkpoint
 import utils.metrics
-
+import glob
 
 def inference(model, images):
     logits = model(images)
@@ -37,7 +37,7 @@ def inference(model, images):
     return logits, aux_logits, probabilities
 
 
-def evaluate_single_epoch(config, model, dataloader, criterion,
+def evaluate_single_epoch(config,gi, model, dataloader, criterion,
                           epoch, writer, postfix_dict):
     model.eval()
 
@@ -91,13 +91,13 @@ def evaluate_single_epoch(config, model, dataloader, criterion,
 
         for key, value in log_dict.items():
             if writer is not None:
-                writer.add_scalar('val/{}'.format(key), value, epoch)
-            postfix_dict['val/{}'.format(key)] = value
+                writer.add_scalar('val/{}/{}'.format(gi, key), value, epoch)
+            postfix_dict['val/{}/{}'.format(gi, key)] = value
 
         return f1
 
 
-def train_single_epoch(config, model, dataloader, criterion, optimizer,
+def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
                        epoch, writer, postfix_dict):
     model.train()
 
@@ -141,7 +141,7 @@ def train_single_epoch(config, model, dataloader, criterion, optimizer,
 
         log_dict['lr'] = optimizer.param_groups[0]['lr']
         for key, value in log_dict.items():
-            postfix_dict['train/{}'.format(key)] = value
+            postfix_dict['train/{}/{}'.format(gi, key)] = value
 
         desc = '{:5s}'.format('train')
         desc += ', {:06d}/{:06d}, {:.2f} epoch'.format(i, total_step, f_epoch)
@@ -152,10 +152,10 @@ def train_single_epoch(config, model, dataloader, criterion, optimizer,
             log_step = int(f_epoch * 10000)
             if writer is not None:
                 for key, value in log_dict.items():
-                    writer.add_scalar('train/{}'.format(key), value, log_step)
+                    writer.add_scalar('train/{}/{}'.format(gi, key), value, log_step)
 
 
-def train(config, model, dataloaders, criterion, optimizer, scheduler, writer, start_epoch):
+def train(config,gi, model, dataloaders, criterion, optimizer, scheduler, writer, start_epoch):
     num_epochs = config.train.num_epochs
     
     if torch.cuda.device_count() > 1:
@@ -175,11 +175,11 @@ def train(config, model, dataloaders, criterion, optimizer, scheduler, writer, s
     best_f1_mavg = 0.0
     for epoch in range(start_epoch, num_epochs):
         # train phase
-        train_single_epoch(config, model, dataloaders['train'],
+        train_single_epoch(config, gi, model, dataloaders['train'],
                            criterion, optimizer, epoch, writer, postfix_dict)
 
         # val phase
-        f1 = evaluate_single_epoch(config, model, dataloaders['val'],
+        f1 = evaluate_single_epoch(config,gi, model, dataloaders['val'],
                                    criterion, epoch, writer, postfix_dict)
 
         if config.scheduler.name == 'reduce_lr_on_plateau':
@@ -187,7 +187,7 @@ def train(config, model, dataloaders, criterion, optimizer, scheduler, writer, s
         elif config.scheduler.name != 'reduce_lr_on_plateau':
           scheduler.step()
 
-        utils.checkpoint.save_checkpoint(config, model, optimizer, epoch, 0)
+        utils.checkpoint.save_checkpoint(config, gi, model, optimizer, epoch, 0)
 
         f1_list.append(f1)
         f1_list = f1_list[-10:]
@@ -201,29 +201,39 @@ def train(config, model, dataloaders, criterion, optimizer, scheduler, writer, s
 
 
 def run(config):
-    train_dir = config.train.dir
+    train_group_csv_dir = './data/group_csv/'
+    writer = SummaryWriter(config.train.dir)
+    train_filenames = list(glob.glob(os.path.join(train_group_csv_dir, 'data_train_group_*')))
     
-    model = get_model(config)
-    if torch.cuda.is_available():
-        model = model.cuda()
-    criterion = get_loss(config)
-    optimizer = get_optimizer(config, model.parameters())
-
-    checkpoint = utils.checkpoint.get_initial_checkpoint(config)
-    if checkpoint is not None:
-        last_epoch, step = utils.checkpoint.load_checkpoint(model, optimizer, checkpoint)
-    else:
-        last_epoch, step = -1, -1
-
-    print('from checkpoint: {} last epoch:{}'.format(checkpoint, last_epoch))
-    scheduler = get_scheduler(config, optimizer, last_epoch)
+    for train_file in train_filenames:
+        gi_tr = train_file.replace('data_train_group_', '')
+        gi_tr = gi_tr.repalce('.csv', '')
+        group_idx = int(gi_tr)
+        utils.prepare_train_directories(config)
+        
+        model = get_model(config)
+        if torch.cuda.is_available():
+            model = model.cuda()
+        criterion = get_loss(config)
+        optimizer = get_optimizer(config, model.parameters())
+        
     
-    dataloaders = {split:get_dataloader(config, split, get_transform(config, split))
+
+        checkpoint = utils.checkpoint.get_initial_checkpoint(config, group_idx)
+        if checkpoint is not None:
+            last_epoch, step = utils.checkpoint.load_checkpoint(model, optimizer, checkpoint)
+        else:
+            last_epoch, step = -1, -1
+
+        print('from checkpoint: {} last epoch:{}'.format(checkpoint, last_epoch))
+        scheduler = get_scheduler(config, optimizer, last_epoch)
+    
+        dataloaders = {split:get_dataloader(config, group_idx, split, get_transform(config, split))
                    for split in ['train', 'val']}
     
 
-    writer = SummaryWriter(config.train.dir)
-    train(config, model, dataloaders, criterion, optimizer, scheduler,
+    
+        train(config,group_idx, model, dataloaders, criterion, optimizer, scheduler,
           writer, last_epoch+1)
 
 
@@ -246,7 +256,7 @@ def main():
 
     config = utils.config.load(args.config_file)
     pprint.PrettyPrinter(indent=2).pprint(config)
-    utils.prepare_train_directories(config)
+    
     run(config)
 
     print('success!')

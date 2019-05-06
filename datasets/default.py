@@ -10,10 +10,11 @@ import scipy.misc as misc
 
 from torch.utils.data.dataset import Dataset
 import tqdm
+import ast
 
 class DefaultDataset(Dataset):
     def __init__(self,
-                 dataset_dir,
+                 group_idx,
                  split,
                  transform=None,
                  idx_fold=0,
@@ -21,37 +22,49 @@ class DefaultDataset(Dataset):
                  #split_prefix='split.stratified',
                  **_):
         self.split = split
+        self.group_idx = group_idx
         self.idx_fold = idx_fold
         self.num_fold = num_fold
         self.transform = transform
-        self.dataset_dir = dataset_dir
-        self.images_dir = os.path.join(dataset_dir, 'train_images')
-
+        self.dataset_dir = './data/group_csv/'
+        self.images_dir = os.path.join('./data/', 'train_images')
+        csv_path = 'data_{}_group_{}.csv'.format(self.split, self.group_idx)
+        self.csv_path = os.path.join(self.dataset_dir, csv_path)
+        
         self.df_labels = self.load_labels()
         self.load_key_idx()
-        self.examples = self.load_examples()
-        self.size = len(self.examples)
+
+        self.size = len(self.key2idx)
         
     def load_key_idx(self):
-        whole_path = os.path.join(self.dataset_dir, 'filter_data_train.csv')
-        df_train = pd.read_csv(whole_path)
+        key_group_list = []
+        with open(os.path.join('./data/', 'key_groups.txt'), 'r') as f: 
+            key_group_list = ast.literal_eval(f.read())
+        self.key_list =  key_group_list[self.group_idx]
+        key_idx_list = {}
+        for i, key in enumerate( self.key_list):
+            key_idx_list[key] = i
+        
+        df_train = pd.read_csv(self.csv_path)
         num = df_train.shape[0]
         print('total ', num)
+        self.key2idx = []
         key_idx_list = {}
         for i in tqdm.tqdm(range(num)):
             landmark_id = df_train.get_value(i, 'landmark_id')
-            if landmark_id not in key_idx_list:
-                key_idx_list[landmark_id] = len(key_idx_list.items())
+            if landmark_id not in self.key_list:
+                 self.key2idx.append( len(key_idx_list.items()))
+            else:
+                self.key2idx.append(key_idx_list[landmark_id])
                 
-        self.key2idx = key_idx_list
+        
             
     def load_labels(self):
-        labels_path = 'data_{}.csv'.format(self.split)
-        labels_path = os.path.join(self.dataset_dir, labels_path)
+        
       #  print('labels_path ', labels_path)
-        df_labels = pd.read_csv(labels_path)
+        df_labels = pd.read_csv(self.csv_path)
      #   print('df_labels ', df_labels)
-        df_labels = df_labels.reset_index()
+     #   df_labels = df_labels.reset_index()
 
         def to_filepath(v):
             dir1 = v[0:1]
@@ -64,27 +77,19 @@ class DefaultDataset(Dataset):
         #print(df_labels)
         return df_labels
 
-    def load_examples(self):
-        out = []
-        for _, row in self.df_labels.iterrows():
-            key_idx = self.key2idx[row['landmark_id']]
-            if key_idx > 1000:
-                key_idx = 1001
-            out.append((key_idx, row['filepath']))
-        return out
+    
                 
 
     def __getitem__(self, index):
-        example = self.examples[index]
 
-        filename = example[1]
+        filename = self.df_labels[index]
         image = misc.imread(filename)
 
         if self.transform is not None:
             image = self.transform(image)
        # print('filename ', filename, ' key ', example[0])
         return {'image': image,
-                'key': example[0]}
+                'key': self.key2idx[index]}
 
     def __len__(self):
         return self.size
