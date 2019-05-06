@@ -68,7 +68,7 @@ def write_train_val_to_csv(datalist, groupIdx):
     
     train_pd = pd.DataFrame.from_records(train_data, columns=['id', 'landmark_id'])
     file_name = 'data_train_group_' + str(groupIdx) + '.csv'
-    output_filename = os.path.join(data_dir, file_name)
+    output_filename = os.path.join(data_dir,'group_csv', file_name)
     train_pd.to_csv(output_filename, index=False)
     
     val_data = []
@@ -88,7 +88,7 @@ def gen_data_cvs_for_group():
          
     df_train = pd.read_csv(os.path.join(data_dir, 'train.csv'))
     num = df_train.shape[0]
-    for gi, key_group in enumerate( tqdm.tqdm(key_group_list)):
+    for gi, key_group in enumerate( tqdm.tqdm(key_group_list[ 15:])):
         key_in_data = []
         key_not_data = []
         for i in tqdm.tqdm(range(num)):
