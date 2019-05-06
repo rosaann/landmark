@@ -79,7 +79,7 @@ def write_train_val_to_csv(datalist, groupIdx):
     
     val_pd = pd.DataFrame.from_records(val_data, columns=['id', 'landmark_id'])
     val_file_name = 'data_tval_group_' + str(groupIdx) + '.csv'
-    output_filename = os.path.join(data_dir, val_file_name)
+    output_filename = os.path.join(data_dir,'group_csv', val_file_name)
     val_pd.to_csv(output_filename, index=False)
 def gen_data_cvs_for_group():
     key_group_list = []
