@@ -53,7 +53,7 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
         log_dict = {'acc' : 0}
         tbar = tqdm.tqdm(enumerate(dataloader))
         for i, data in enumerate(dataloader):
-            print('ll ', len(data))
+            print('evall ', len(data))
             images = data['image']
             labels = data['key']
             if torch.cuda.is_available():
@@ -212,7 +212,7 @@ def train(config,gi, model, dataloaders, criterion, optimizer, scheduler, writer
 def run(config):
     train_group_csv_dir = './data/group_csv/'
     writer = SummaryWriter(config.train.dir)
-    train_filenames = list(glob.glob(os.path.join(train_group_csv_dir, 'data_train_group_*')))
+    train_filenames = list(glob.glob(os.path.join(train_group_csv_dir, 'data_train_group_*')))[1:]
     
     for ti, train_file in tqdm.tqdm(enumerate(train_filenames)):
         gi_tr = train_file.replace('data_train_group_', '')
