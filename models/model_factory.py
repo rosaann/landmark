@@ -263,7 +263,7 @@ def get_model(config, gi):
     if config.model.params is None:
         return f(class_num)
     else:
-        config.model.params.num_classes = class_num
+        config.model.params['num_classes'] = class_num
         return f(**config.model.params)
 
 
