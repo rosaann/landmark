@@ -212,7 +212,7 @@ def run(config):
         group_idx = int(gi_tr)
         utils.prepare_train_directories(config, group_idx)
         
-        model = get_model(config)
+        model = get_model(config, group_idx)
         if torch.cuda.is_available():
             model = model.cuda()
         criterion = get_loss(config)
