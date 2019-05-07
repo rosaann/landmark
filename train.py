@@ -67,17 +67,17 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
             probability_list.extend(probabilities.cpu().numpy())
             label_list.extend(labels.cpu().numpy())
 
-            f_epoch = epoch + i / total_step
-            desc = '{:5s}'.format('val')
-            desc += ', {:06d}/{:06d}, {:.2f} epoch'.format(i, total_step, f_epoch)
-            tbar.set_description(desc)
-            tbar.set_postfix(**postfix_dict)
+           # f_epoch = epoch + i / total_step
+           # desc = '{:5s}'.format('val')
+           # desc += ', {:06d}/{:06d}, {:.2f} epoch'.format(i, total_step, f_epoch)
+           # tbar.set_description(desc)
+           # tbar.set_postfix(**postfix_dict)
 
         log_dict = {}
         labels = np.array(label_list)
         probabilities = np.array(probability_list)
 
-        predictions = (probabilities > 0.5).astype(int)
+        predictions = torch.argmax(probabilities, 1)
         accuracy = np.sum((predictions == labels).astype(float)) / float(predictions.size)
 
         log_dict['acc'] = accuracy
@@ -85,7 +85,7 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
         log_dict['loss'] = sum(loss_list) / len(loss_list)
 
         if writer is not None:
-            for l in range(203094):
+            for l in range(len(predictions)):
                 f1 = utils.metrics.f1_score(labels[:,l], predictions[:,l], 'binary')
                 writer.add_scalar('val/f1_{:02d}'.format(l), f1, epoch)
 
@@ -123,13 +123,9 @@ def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
         if aux_logits is not None:
             aux_loss = criterion(aux_logits, labels)
             loss = loss + 0.4 * aux_loss
-        log_dict['loss'] = loss.item()
+        log_dict['loss'] += loss.item()
         loss.backward()
         
-        
-
-        
-
         if config.train.num_grad_acc is None:
             optimizer.step()
             optimizer.zero_grad()
@@ -137,30 +133,27 @@ def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
             optimizer.step()
             optimizer.zero_grad()
 
-       # predictions = np.argmax(probabilities.cpu().detach().numpy(), axis = 1)  
         predictions = torch.argmax(probabilities, 1)
-       # print('predictions ', predictions.shape, predictions)
         
        # predictions = predictions.tolist()
         accuracy = (predictions == labels).sum().float() / float(predictions.numel())
-        log_dict['acc'] = accuracy.item()
+        log_dict['acc'] += accuracy.item()
         
-        f_epoch = epoch + i / total_step
+     #   f_epoch = epoch + i / total_step
 
-        log_dict['lr'] = optimizer.param_groups[0]['lr']
+        
+      #  for key, value in log_dict.items():
+      #      postfix_dict['train/{}/{}'.format(gi, key)] = value
+
+      #  desc = '{:5s}'.format('train')
+      #  desc += ', {:06d}/{:06d}, {:.2f} epoch'.format(i, total_step, f_epoch)
+      #  tbar.set_description(desc)
+      #  tbar.set_postfix(**postfix_dict)
+    log_dict['lr'] = optimizer.param_groups[0]['lr']
+        
+    if writer is not None:
         for key, value in log_dict.items():
-            postfix_dict['train/{}/{}'.format(gi, key)] = value
-
-        desc = '{:5s}'.format('train')
-        desc += ', {:06d}/{:06d}, {:.2f} epoch'.format(i, total_step, f_epoch)
-        tbar.set_description(desc)
-        tbar.set_postfix(**postfix_dict)
-
-        if i % 100 == 0:
-            log_step = int(f_epoch * 10000)
-            if writer is not None:
-                for key, value in log_dict.items():
-                    writer.add_scalar('train/{}/{}'.format(gi, key), value, log_step)
+            writer.add_scalar('train/{}/{}'.format(gi, key), value, epoch)
 
 
 def train(config,gi, model, dataloaders, criterion, optimizer, scheduler, writer, start_epoch):
