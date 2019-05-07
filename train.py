@@ -116,9 +116,9 @@ def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
             images = images.cuda()
             labels = labels.cuda()
         logits, aux_logits, probabilities = inference(model, images)
-        print('logits ', logits.shape, logits)
-        print('labels ', labels)
-        print('probabilities ', probabilities.shape, probabilities)
+     #   print('logits ', logits.shape, logits)
+     #   print('labels ', labels)
+    #    print('probabilities ', probabilities.shape, probabilities)
         loss = criterion(logits, labels)
         if aux_logits is not None:
             aux_loss = criterion(aux_logits, labels)
@@ -139,7 +139,7 @@ def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
 
        # predictions = np.argmax(probabilities.cpu().detach().numpy(), axis = 1)  
         predictions = torch.argmax(probabilities, 1)
-        print('predictions ', predictions.shape, predictions)
+       # print('predictions ', predictions.shape, predictions)
         
        # predictions = predictions.tolist()
         accuracy = (predictions == labels).sum().float() / float(predictions.numel())
