@@ -67,6 +67,7 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
             loss_list.append(loss.item())
 
             probability_list.extend(probabilities)
+            
             label_list.extend(labels)
             
             predictions = torch.argmax(probabilities, 1)
@@ -89,18 +90,18 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
        # log_dict['f1'] = utils.metrics.f1_score(labels, predictions)
         log_dict['loss'] = sum(loss_list) / len(loss_list)
 
-        if writer is not None:
-            print('p ', p[0].shape, p[0])
-            for l in range(len(p[0])):
-                f1 = utils.metrics.f1_score(labels[:,l], p[:,l], 'binary')
-                writer.add_scalar('val/f1_{:02d}'.format(l), f1, epoch)
+    #    if writer is not None:
+           
+    #        for l in range(len(p[0])):
+    #            f1 = utils.metrics.f1_score(labels[:,l], p[:,l], 'binary')
+    #            writer.add_scalar('val/f1_{:02d}'.format(l), f1, epoch)
 
         for key, value in log_dict.items():
             if writer is not None:
                 writer.add_scalar('val/{}/{}'.format(gi, key), value, epoch)
             postfix_dict['val/{}/{}'.format(gi, key)] = value
 
-        return f1
+     #   return f1
 
 
 def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
@@ -186,7 +187,7 @@ def train(config,gi, model, dataloaders, criterion, optimizer, scheduler, writer
                            criterion, optimizer, epoch, writer, postfix_dict)
 
         # val phase
-        f1 = evaluate_single_epoch(config,gi, model, dataloaders['val'],
+        evaluate_single_epoch(config,gi, model, dataloaders['val'],
                                    criterion, epoch, writer, postfix_dict)
 
         if config.scheduler.name == 'reduce_lr_on_plateau':
@@ -196,15 +197,15 @@ def train(config,gi, model, dataloaders, criterion, optimizer, scheduler, writer
 
         utils.checkpoint.save_checkpoint(config, gi, model, optimizer, epoch, 0)
 
-        f1_list.append(f1)
-        f1_list = f1_list[-10:]
-        f1_mavg = sum(f1_list) / len(f1_list)
+      #  f1_list.append(f1)
+     #   f1_list = f1_list[-10:]
+     #   f1_mavg = sum(f1_list) / len(f1_list)
 
-        if f1 > best_f1:
-            best_f1 = f1
-        if f1_mavg > best_f1_mavg:
-            best_f1_mavg = f1_mavg
-    return {'f1': best_f1, 'f1_mavg': best_f1_mavg}
+     #   if f1 > best_f1:
+     #       best_f1 = f1
+     #   if f1_mavg > best_f1_mavg:
+     #       best_f1_mavg = f1_mavg
+    #return {'f1': best_f1, 'f1_mavg': best_f1_mavg}
 
 
 def run(config):
