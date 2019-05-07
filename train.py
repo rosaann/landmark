@@ -210,7 +210,7 @@ def run(config):
         gi_tr = gi_tr.split('/')[-1]
         gi_tr = gi_tr.replace('.csv', '')
         group_idx = int(gi_tr)
-        utils.prepare_train_directories(config)
+        utils.prepare_train_directories(config, group_idx)
         
         model = get_model(config)
         if torch.cuda.is_available():
