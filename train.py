@@ -105,7 +105,7 @@ def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
     total_size = len(dataloader.dataset)
     total_step = math.ceil(total_size / batch_size)
 
-    log_dict = {}
+    log_dict = {'loss' : 0, 'acc':0}
     tbar = tqdm.tqdm(enumerate(dataloader), total=total_step)
     for i, data in tbar:
         images = data['image']
