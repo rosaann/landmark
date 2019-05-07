@@ -77,8 +77,8 @@ class DefaultDataset(Dataset):
                 'key': self.key2idx[index]}
 
     def __len__(self):
-        return 100
-       # return self.size
+        #return 100
+        return self.size
 
 
 def test():
