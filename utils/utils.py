@@ -9,4 +9,4 @@ import numpy as np
 
 def prepare_train_directories(config, gi):
   out_dir = config.train.dir
-  os.makedirs(os.path.join(out_dir, gi, 'checkpoint'), exist_ok=True)
+  os.makedirs(os.path.join(out_dir, str(gi), 'checkpoint'), exist_ok=True)
