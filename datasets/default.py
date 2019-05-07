@@ -48,7 +48,7 @@ class DefaultDataset(Dataset):
         
         df_train = pd.read_csv(self.csv_path)
         num = df_train.shape[0]
-        print('total ', num)
+       # print('total ', num)
         self.key2idx = []
         self.pathlist = []
         
@@ -81,8 +81,8 @@ class DefaultDataset(Dataset):
                 'key': self.key2idx[index]}
 
     def __len__(self):
-        return 100
-       # return self.size
+       # return 100
+        return self.size
 
 
 def test():

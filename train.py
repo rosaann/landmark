@@ -52,16 +52,16 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
         loss_list = []
         log_dict = {'acc' : 0}
         tbar = tqdm.tqdm(enumerate(dataloader))
-        for i, data in enumerate(dataloader):
-            print('eval image ', len(data['image']))
-            print('eval key ', len(data['key']))
+        for i, data in tbar:
+          #  print('eval image ', len(data['image']))
+          #  print('eval key ', len(data['key']))
             images = data['image']
             labels = data['key']
             if torch.cuda.is_available():
                 images = images.cuda()
                 labels = labels.cuda()
             logits, aux_logits, probabilities = inference(model, images)
-            print('logits ', len(logits))
+          #  print('logits ', len(logits))
             loss = criterion(logits, labels)
             if aux_logits is not None:
                 aux_loss = criterion(aux_logits, labels)
@@ -78,7 +78,7 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
             accuracy = (predictions == labels).sum().float() / float(predictions.numel())
             log_dict['acc'] += accuracy.item()
             predictions_list.extend(predictions)
-            print('---here---')
+           # print('---here---')
            # f_epoch = epoch + i / total_step
            # desc = '{:5s}'.format('val')
            # desc += ', {:06d}/{:06d}, {:.2f} epoch'.format(i, total_step, f_epoch)
@@ -186,8 +186,8 @@ def train(config,gi, model, dataloaders, criterion, optimizer, scheduler, writer
     best_f1_mavg = 0.0
     for epoch in range(start_epoch, num_epochs):
         # train phase
-     #   train_single_epoch(config, gi, model, dataloaders['train'],
-     #                      criterion, optimizer, epoch, writer, postfix_dict)
+        train_single_epoch(config, gi, model, dataloaders['train'],
+                           criterion, optimizer, epoch, writer, postfix_dict)
 
         # val phase
         evaluate_single_epoch(config,gi, model, dataloaders['val'],
