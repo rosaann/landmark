@@ -125,7 +125,8 @@ def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
             loss = loss + 0.4 * aux_loss
         log_dict['loss'] = loss.item()
 
-        predictions = (probabilities > 0.5).long()
+        predictions = np.argmax(probabilities, axis = 1)  
+        print('predictions ', predictions.shape, predictions)
         accuracy = (predictions == labels).sum().float() / float(predictions.numel())
         log_dict['acc'] = accuracy.item()
 
