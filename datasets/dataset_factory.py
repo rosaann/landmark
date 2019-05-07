@@ -12,7 +12,7 @@ from torch.utils.data import DataLoader
 from .default import DefaultDataset
 from .small import SmallDataset
 from .test import TestDataset
-
+from data import detection_collate
 
 def get_dataset(config,group_idx, split, transform=None, last_epoch=-1):
     f = globals().get(config.name)
@@ -33,6 +33,7 @@ def get_dataloader(config, group_idx, split, transform=None, **_):
                             shuffle=is_train,
                             batch_size=batch_size,
                           #  drop_last=is_train,
+                            collate_fn=detection_collate,
                             num_workers=config.transform.num_preprocessor,
                             pin_memory=False)
     return dataloader
