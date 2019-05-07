@@ -79,7 +79,7 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
 
         predictions = torch.argmax(probabilities, 1)
         predictions = np.array(predictions.cpu())
-        accuracy = np.sum((predictions == labels).astype(float)) / float(predictions.size)
+        accuracy = np.sum((predictions == labels).float()) / float(predictions.size)
 
         log_dict['acc'] = accuracy
         log_dict['f1'] = utils.metrics.f1_score(labels, predictions)
