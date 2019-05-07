@@ -138,8 +138,9 @@ def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
             optimizer.zero_grad()
 
         predictions = np.argmax(probabilities.cpu().detach().numpy(), axis = 1)  
-        predictions = predictions.tolist()
+       
         print('predictions ', predictions.shape, predictions)
+        predictions = predictions.tolist()
         accuracy = (predictions == labels).sum().float() / float(predictions.numel())
         log_dict['acc'] = accuracy.item()
         
