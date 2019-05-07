@@ -31,7 +31,6 @@ class DefaultDataset(Dataset):
         csv_path = 'data_{}_group_{}.csv'.format(self.split, self.group_idx)
         self.csv_path = os.path.join(self.dataset_dir, csv_path)
         
-        self.df_labels = self.load_labels()
         self.load_key_idx_and_path()
 
         self.size = len(self.key2idx)
