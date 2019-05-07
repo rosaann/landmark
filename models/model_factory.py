@@ -264,6 +264,7 @@ def get_model(config, gi):
         return f(class_num)
     else:
         #config.model.params['num_classes'] = class_num
+        print('f ', f)
         return f()
       #  return f(**config.model.params )
 
