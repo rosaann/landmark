@@ -52,7 +52,7 @@ class DefaultDataset(Dataset):
         self.key2idx = []
         self.pathlist = []
         
-        for i in tqdm.tqdm(range(num)):
+        for i in range(num):
             landmark_id = df_train.get_value(i, 'landmark_id')
             if landmark_id not in self.key_list:
                  self.key2idx.append( len(key_idx_list.items()))
