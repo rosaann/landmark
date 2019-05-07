@@ -254,8 +254,8 @@ def get_model(config, gi):
     f = globals().get('get_' + config.model.name)
     
     class_num = 5000
-    with open(os.path.join('./data/', 'key_groups.txt'), 'r') as f: 
-        key_group_list = ast.literal_eval(f.read())
+    with open(os.path.join('./data/', 'key_groups.txt'), 'r') as file: 
+        key_group_list = ast.literal_eval(file.read())
         class_num =  len(key_group_list[gi])
         
   #  print('parm ',  config.model.params)
@@ -263,10 +263,9 @@ def get_model(config, gi):
     if config.model.params is None:
         return f(class_num)
     else:
-        #config.model.params['num_classes'] = class_num
-        print('f ', f)
-        return f()
-      #  return f(**config.model.params )
+        config.model.params['num_classes'] = class_num
+        
+        return f(**config.model.params )
 
 
 if __name__ == '__main__':
