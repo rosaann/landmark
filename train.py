@@ -53,7 +53,8 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
         log_dict = {'acc' : 0}
         tbar = tqdm.tqdm(enumerate(dataloader))
         for i, data in enumerate(dataloader):
-            print('evall ', len(data))
+            print('eval image ', len(data['image']))
+            print('eval key ', len(data['key']))
             images = data['image']
             labels = data['key']
             if torch.cuda.is_available():
