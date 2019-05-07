@@ -35,7 +35,7 @@ class DefaultDataset(Dataset):
         self.load_key_idx_and_path()
 
         self.size = len(self.key2idx)
-        print('self.pathlist ', len(self.pathlist), ' self.key2idx ', len(self.key2idx))
+       # print('self.pathlist ', len(self.pathlist), ' self.key2idx ', len(self.key2idx))
         
     def load_key_idx_and_path(self):
         key_group_list = []
