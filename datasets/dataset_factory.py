@@ -29,6 +29,7 @@ def get_dataloader(config, group_idx, split, transform=None, **_):
     is_train = 'train' == split
     batch_size = config.train.batch_size if is_train else config.eval.batch_size
 
+    print('split ', split, ' batch_size ', batch_size)
     dataloader = DataLoader(dataset,
                             shuffle=is_train,
                             batch_size=batch_size,
