@@ -137,10 +137,10 @@ def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
             optimizer.step()
             optimizer.zero_grad()
 
-        predictions = np.argmax(probabilities.cpu().detach().numpy(), axis = 1)  
-       
+       # predictions = np.argmax(probabilities.cpu().detach().numpy(), axis = 1)  
+        values, predictions = torch.max(probabilities, 1)
         print('predictions ', predictions.shape, predictions)
-        predictions = predictions.tolist()
+       # predictions = predictions.tolist()
         accuracy = (predictions == labels).sum().float() / float(predictions.numel())
         log_dict['acc'] = accuracy.item()
         
