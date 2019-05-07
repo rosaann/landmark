@@ -32,11 +32,11 @@ class DefaultDataset(Dataset):
         self.csv_path = os.path.join(self.dataset_dir, csv_path)
         
         self.df_labels = self.load_labels()
-        self.load_key_idx()
+        self.load_key_idx_and_path()
 
         self.size = len(self.key2idx)
         
-    def load_key_idx(self):
+    def load_key_idx_and_path(self):
         key_group_list = []
         with open(os.path.join('./data/', 'key_groups.txt'), 'r') as f: 
             key_group_list = ast.literal_eval(f.read())
@@ -49,6 +49,7 @@ class DefaultDataset(Dataset):
         num = df_train.shape[0]
         print('total ', num)
         self.key2idx = []
+        self.pathlist = []
         
         for i in tqdm.tqdm(range(num)):
             landmark_id = df_train.get_value(i, 'landmark_id')
@@ -57,32 +58,13 @@ class DefaultDataset(Dataset):
             else:
                 self.key2idx.append(key_idx_list[landmark_id])
                 
-        
+            img_id = df_train.get_value(i, 'id')
+            self.pathlist.append(self.to_filepath(img_id))
             
-    def load_labels(self):
-        
-      #  print('labels_path ', labels_path)
-        df_labels = pd.read_csv(self.csv_path)
-     #   print('df_labels ', df_labels)
-     #   df_labels = df_labels.reset_index()
-
-        def to_filepath(v):
-            dir1 = v[0:1]
-            dir2 = v[1:2]
-            dir3 = v[2:3]
-            return os.path.join(self.images_dir,dir1,dir2,dir3, v + '.jpg')
-            
-
-        df_labels['filepath'] = df_labels['id'].transform(to_filepath)
-        #print(df_labels)
-        return df_labels
-
     
-                
-
     def __getitem__(self, index):
 
-        filename = self.df_labels[index]['filepath']
+        filename = self.pathlist[index]
         image = misc.imread(filename)
 
         if self.transform is not None:
