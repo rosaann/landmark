@@ -50,6 +50,7 @@ class Attention(nn.Module):
 class AttentionInceptionV3(nn.Module):
     def __init__(self, num_classes=28, attention_size=8, aux_attention_size=8):
         super().__init__()
+        print('AttentionInceptionV3 num_classes  ----', num_classes)
         self.num_classes = num_classes
         self.cnn = torchvision.models.inception_v3(pretrained=True)
         self.attention_size = attention_size
@@ -262,7 +263,8 @@ def get_model(config, gi):
     if config.model.params is None:
         return f(class_num)
     else:
-        return f(num_classes = class_num, **config.model.params)
+        config.model.params.num_classes = class_num
+        return f(**config.model.params)
 
 
 if __name__ == '__main__':
