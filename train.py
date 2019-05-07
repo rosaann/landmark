@@ -116,8 +116,9 @@ def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
             images = images.cuda()
             labels = labels.cuda()
         logits, aux_logits, probabilities = inference(model, images)
-        print('logits ', logits)
+        print('logits ', logits.shape, logits)
         print('labels ', labels)
+        print('probabilities ', probabilities.shape, probabilities)
         loss = criterion(logits, labels)
         if aux_logits is not None:
             aux_loss = criterion(aux_logits, labels)
