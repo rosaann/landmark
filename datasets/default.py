@@ -59,8 +59,12 @@ class DefaultDataset(Dataset):
                 
             img_id = df_train.get_value(i, 'id')
             self.pathlist.append(self.to_filepath(img_id))
-            
-    
+                  
+    def to_filepath(self, v):
+            dir1 = v[0:1]
+            dir2 = v[1:2]
+            dir3 = v[2:3]
+            return os.path.join(self.images_dir,dir1,dir2,dir3, v + '.jpg')
     def __getitem__(self, index):
 
         filename = self.pathlist[index]
