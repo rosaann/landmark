@@ -82,7 +82,7 @@ class DefaultDataset(Dataset):
 
     def __getitem__(self, index):
 
-        filename = self.df_labels[index]
+        filename = self.df_labels[index]['filepath']
         image = misc.imread(filename)
 
         if self.transform is not None:
