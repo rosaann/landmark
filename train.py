@@ -78,6 +78,7 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
             accuracy = (predictions == labels).sum().float() / float(predictions.numel())
             log_dict['acc'] += accuracy.item()
             predictions_list.extend(predictions)
+            print('---here---')
            # f_epoch = epoch + i / total_step
            # desc = '{:5s}'.format('val')
            # desc += ', {:06d}/{:06d}, {:.2f} epoch'.format(i, total_step, f_epoch)
