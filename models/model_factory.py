@@ -247,13 +247,18 @@ def get_se_resnext50(num_classes=203094, **kwargs):
     return get_senet('se_resnext50_32x4d', num_classes=num_classes, **kwargs)
 
 
-def get_model(config):
+def get_model(config, gi):
     print('model name:', config.model.name)
     f = globals().get('get_' + config.model.name)
+    
+    class_num = 5000
+    with open(os.path.join('./data/', 'key_groups.txt'), 'r') as f: 
+        key_group_list = ast.literal_eval(f.read())
+        class_num =  len(key_group_list[gi])
     if config.model.params is None:
         return f()
     else:
-        return f(**config.model.params)
+        return f(num_classes=class_num, **config.model.params)
 
 
 if __name__ == '__main__':

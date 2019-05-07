@@ -12,7 +12,7 @@ model:
 
 train:
   dir: './results/attention_inceptionv3'
-  batch_size: 1
+  batch_size: 16
   num_epochs: 23
   num_grad_acc: 4
 
