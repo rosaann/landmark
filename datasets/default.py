@@ -49,7 +49,7 @@ class DefaultDataset(Dataset):
         num = df_train.shape[0]
         print('total ', num)
         self.key2idx = []
-        key_idx_list = {}
+        
         for i in tqdm.tqdm(range(num)):
             landmark_id = df_train.get_value(i, 'landmark_id')
             if landmark_id not in self.key_list:
