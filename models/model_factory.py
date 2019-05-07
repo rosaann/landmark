@@ -259,7 +259,7 @@ def get_model(config, gi):
     if config.model.params is None:
         return f()
     else:
-        return f(num_classes=class_num, **config.model.params)
+        return f(class_num, **config.model.params)
 
 
 if __name__ == '__main__':
