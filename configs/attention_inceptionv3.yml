@@ -9,7 +9,7 @@ model:
   name: 'attention_inceptionv3'
   params:
     attention_size: 8
-    num_classes : 20
+    num_classes : 32
 
 train:
   dir: './results/attention_inceptionv3'
