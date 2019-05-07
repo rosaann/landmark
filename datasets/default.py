@@ -69,16 +69,17 @@ class DefaultDataset(Dataset):
 
         filename = self.pathlist[index]
         image = misc.imread(filename)
-
+        
         if self.transform is not None:
             image = self.transform(image)
-       # print('filename ', filename, ' key ', example[0])
+        print('image ', image.shape)
+        print('self.key2idx[index] ', self.key2idx[index])
         return {'image': image,
                 'key': self.key2idx[index]}
 
     def __len__(self):
-        #return 100
-        return self.size
+        return 100
+       # return self.size
 
 
 def test():
