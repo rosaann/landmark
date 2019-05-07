@@ -11,6 +11,7 @@ import scipy.misc as misc
 from torch.utils.data.dataset import Dataset
 import tqdm
 import ast
+import cv2
 
 class DefaultDataset(Dataset):
     def __init__(self,
@@ -68,8 +69,8 @@ class DefaultDataset(Dataset):
     def __getitem__(self, index):
 
         filename = self.pathlist[index]
-        image = misc.imread(filename)
-        
+        #image = misc.imread(filename)
+        image = cv2.imread(filename)
         if self.transform is not None:
             image = self.transform(image)
         print('image ', image.shape)
