@@ -47,8 +47,10 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
         total_step = math.ceil(total_size / batch_size)
 
         probability_list = []
+        predictions_list = []
         label_list = []
         loss_list = []
+        log_dict = {'acc' : 0}
         tbar = tqdm.tqdm(enumerate(dataloader), total=total_step)
         for i, data in tbar:
             images = data['image']
@@ -66,28 +68,30 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
 
             probability_list.extend(probabilities)
             label_list.extend(labels)
-
+            
+            predictions = torch.argmax(probabilities, 1)
+        
+       # predictions = predictions.tolist()
+            accuracy = (predictions == labels).sum().float() / float(predictions.numel())
+            log_dict['acc'] += accuracy.item()
+            predictions_list.extend(predictions)
            # f_epoch = epoch + i / total_step
            # desc = '{:5s}'.format('val')
            # desc += ', {:06d}/{:06d}, {:.2f} epoch'.format(i, total_step, f_epoch)
            # tbar.set_description(desc)
            # tbar.set_postfix(**postfix_dict)
 
-        log_dict = {}
+        
         labels = np.array(label_list)
+        p = np.array(predictions_list)
        # probabilities = np.array(probability_list)
-
-        predictions = torch.argmax(probabilities, 1)
-        predictions = np.array(predictions.cpu())
-        accuracy = np.sum((predictions == labels).float()) / float(predictions.size)
-
-        log_dict['acc'] = accuracy
-        log_dict['f1'] = utils.metrics.f1_score(labels, predictions)
+        
+       # log_dict['f1'] = utils.metrics.f1_score(labels, predictions)
         log_dict['loss'] = sum(loss_list) / len(loss_list)
 
         if writer is not None:
-            for l in range(len(predictions)):
-                f1 = utils.metrics.f1_score(labels[:,l], predictions[:,l], 'binary')
+            for l in range(len(p)):
+                f1 = utils.metrics.f1_score(labels[:,l], p[:,l], 'binary')
                 writer.add_scalar('val/f1_{:02d}'.format(l), f1, epoch)
 
         for key, value in log_dict.items():
