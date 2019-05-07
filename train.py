@@ -58,14 +58,14 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
                 labels = labels.cuda()
             logits, aux_logits, probabilities = inference(model, images)
 
-            loss = criterion(logits, labels.float())
+            loss = criterion(logits, labels)
             if aux_logits is not None:
-                aux_loss = criterion(aux_logits, labels.float())
+                aux_loss = criterion(aux_logits, labels)
                 loss = loss + 0.4 * aux_loss
             loss_list.append(loss.item())
 
-            probability_list.extend(probabilities.cpu().numpy())
-            label_list.extend(labels.cpu().numpy())
+            probability_list.extend(probabilities)
+            label_list.extend(labels)
 
            # f_epoch = epoch + i / total_step
            # desc = '{:5s}'.format('val')
@@ -74,8 +74,8 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
            # tbar.set_postfix(**postfix_dict)
 
         log_dict = {}
-        labels = np.array(label_list)
-        probabilities = np.array(probability_list)
+     #   labels = np.array(label_list)
+     #   probabilities = np.array(probability_list)
 
         predictions = torch.argmax(probabilities, 1)
         accuracy = np.sum((predictions == labels).astype(float)) / float(predictions.size)
