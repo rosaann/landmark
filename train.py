@@ -213,11 +213,12 @@ def run(config):
     writer = SummaryWriter(config.train.dir)
     train_filenames = list(glob.glob(os.path.join(train_group_csv_dir, 'data_train_group_*')))
     
-    for train_file in train_filenames:
+    for ti, train_file in tqdm.tqdm(enumerate(train_filenames)):
         gi_tr = train_file.replace('data_train_group_', '')
         gi_tr = gi_tr.split('/')[-1]
         gi_tr = gi_tr.replace('.csv', '')
         group_idx = int(gi_tr)
+        print('group -- ', str(group_idx), '-- index-', ti)
         utils.prepare_train_directories(config, group_idx)
         
         model = get_model(config, group_idx)
