@@ -124,13 +124,11 @@ def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
             aux_loss = criterion(aux_logits, labels)
             loss = loss + 0.4 * aux_loss
         log_dict['loss'] = loss.item()
-
-        predictions = np.argmax(probabilities, axis = 1)  
-        print('predictions ', predictions.shape, predictions)
-        accuracy = (predictions == labels).sum().float() / float(predictions.numel())
-        log_dict['acc'] = accuracy.item()
-
         loss.backward()
+        
+        
+
+        
 
         if config.train.num_grad_acc is None:
             optimizer.step()
@@ -139,6 +137,11 @@ def train_single_epoch(config, gi, model, dataloader, criterion, optimizer,
             optimizer.step()
             optimizer.zero_grad()
 
+        predictions = np.argmax(probabilities.detach().numpy(), axis = 1)  
+        print('predictions ', predictions.shape, predictions)
+        accuracy = (predictions == labels).sum().float() / float(predictions.numel())
+        log_dict['acc'] = accuracy.item()
+        
         f_epoch = epoch + i / total_step
 
         log_dict['lr'] = optimizer.param_groups[0]['lr']
