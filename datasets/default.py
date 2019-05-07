@@ -74,7 +74,7 @@ class DefaultDataset(Dataset):
         image = cv2.imread(filename)
         if self.transform is not None:
             image = self.transform(image)
-        print('image ', image.shape, ' filename ', filename, 'index ', index)
+        #print('image ', image.shape, ' filename ', filename, 'index ', index)
        # print('self.key2idx[index] ', self.key2idx[index])
         
         return {'image': image,

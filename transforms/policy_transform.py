@@ -77,8 +77,8 @@ def policy_transform(split,
      #   image = aug(image=image)['image']
       image = resize(image=image)['image']
     else:
-      if size != image.shape[0]:
-        image = resize(image=image)['image']
+      #if size != image.shape[0]:
+      image = resize(image=image)['image']
 
     image = image.astype(np.float32)
     if per_image_norm:
