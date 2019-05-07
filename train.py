@@ -75,9 +75,10 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
 
         log_dict = {}
         labels = np.array(label_list)
-        probabilities = np.array(probability_list)
+       # probabilities = np.array(probability_list)
 
         predictions = torch.argmax(probabilities, 1)
+        predictions = np.array(predictions)
         accuracy = np.sum((predictions == labels).astype(float)) / float(predictions.size)
 
         log_dict['acc'] = accuracy
