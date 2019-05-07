@@ -32,7 +32,7 @@ def get_dataloader(config, group_idx, split, transform=None, **_):
     dataloader = DataLoader(dataset,
                             shuffle=is_train,
                             batch_size=batch_size,
-                            drop_last=is_train,
+                          #  drop_last=is_train,
                             num_workers=config.transform.num_preprocessor,
                             pin_memory=False)
     return dataloader

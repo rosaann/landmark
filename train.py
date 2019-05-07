@@ -51,7 +51,7 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
         label_list = []
         loss_list = []
         log_dict = {'acc' : 0}
-        tbar = tqdm.tqdm(enumerate(dataloader), total=total_step)
+        tbar = tqdm.tqdm(enumerate(dataloader))
         for i, data in tbar:
             images = data['image']
             labels = data['key']
