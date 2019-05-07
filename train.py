@@ -218,7 +218,7 @@ def run(config):
         gi_tr = gi_tr.split('/')[-1]
         gi_tr = gi_tr.replace('.csv', '')
         group_idx = int(gi_tr)
-        print('group -- ', str(group_idx), '-- index-', ti)
+        
         utils.prepare_train_directories(config, group_idx)
         
         model = get_model(config, group_idx)
@@ -236,6 +236,7 @@ def run(config):
             last_epoch, step = -1, -1
 
         print('from checkpoint: {} last epoch:{}'.format(checkpoint, last_epoch))
+        print('group -- ', str(group_idx), '-- index-', ti)
         scheduler = get_scheduler(config, optimizer, last_epoch)
     
         dataloaders = {split:get_dataloader(config, group_idx, split, get_transform(config, split))
