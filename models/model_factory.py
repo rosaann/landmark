@@ -257,7 +257,7 @@ def get_model(config, gi):
         key_group_list = ast.literal_eval(f.read())
         class_num =  len(key_group_list[gi])
         
-    print('parm ', **config.model.params)
+    print('parm ',  config.model.params)
     print('class_num ', class_num)
     if config.model.params is None:
         return f(class_num)
