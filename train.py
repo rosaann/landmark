@@ -74,8 +74,8 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
            # tbar.set_postfix(**postfix_dict)
 
         log_dict = {}
-     #   labels = np.array(label_list)
-     #   probabilities = np.array(probability_list)
+        labels = np.array(label_list)
+        probabilities = np.array(probability_list)
 
         predictions = torch.argmax(probabilities, 1)
         accuracy = np.sum((predictions == labels).astype(float)) / float(predictions.size)
