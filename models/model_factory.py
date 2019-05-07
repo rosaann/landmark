@@ -9,7 +9,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models
 import pretrainedmodels
-
+import os
+import ast
 #203094
 class Attention(nn.Module):
     def __init__(self, num_classes=137133, cnn='resnet34', attention_size=8):
