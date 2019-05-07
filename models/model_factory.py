@@ -256,6 +256,9 @@ def get_model(config, gi):
     with open(os.path.join('./data/', 'key_groups.txt'), 'r') as f: 
         key_group_list = ast.literal_eval(f.read())
         class_num =  len(key_group_list[gi])
+        
+    print('parm ', **config.model.params)
+    print('class_num ', class_num)
     if config.model.params is None:
         return f(class_num)
     else:
