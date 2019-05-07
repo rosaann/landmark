@@ -60,7 +60,7 @@ def evaluate_single_epoch(config,gi, model, dataloader, criterion,
                 images = images.cuda()
                 labels = labels.cuda()
             logits, aux_logits, probabilities = inference(model, images)
-
+            print('logits ', len(logits))
             loss = criterion(logits, labels)
             if aux_logits is not None:
                 aux_loss = criterion(aux_logits, labels)
