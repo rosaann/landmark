@@ -13,12 +13,12 @@ model:
 
 train:
   dir: './results/attention_inceptionv3/writer'
-  batch_size: 24
-  num_epochs: 30
+  batch_size: 28
+  num_epochs: 20
   num_grad_acc: 4
 
 eval:
-  batch_size: 24
+  batch_size: 28
 
 loss:
   name: 'cross_entropy'
@@ -30,7 +30,7 @@ optimizer:
 
 transform:
   name: 'policy_transform'
-  num_preprocessor: 4
+  num_preprocessor: 8
   params:
     policies: 'best_policy.data'
     per_image_norm: True

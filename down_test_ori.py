@@ -15,6 +15,7 @@ from urllib.request import urlopen
 import time
 import tqdm
 import urllib.request
+import ast
 def ParseData(data_file):
   csvfile = open(data_file, 'r')
   csvreader = csv.reader(csvfile)
@@ -22,6 +23,21 @@ def ParseData(data_file):
   return key_url_list[1:]  # Chop off header
 
 out_dir = 'data/test_images'
+ 
+down_failed_file =  'down_failed.txt'
+down_failed_list = {}
+if os.path.exists(down_failed_file):
+    with open(down_failed_file, 'r') as f: 
+         down_failed_list = ast.literal_eval(f.read())
+
+
+def note_down_failed(key, url):
+    down_failed_list[key] = url
+    fileObject = open(down_failed_file, 'w')
+  #  for ip in key_group_list:
+    fileObject.write(str(down_failed_list))
+    fileObject.write('\n')
+    fileObject.close()         
 def DownloadImage(key_url):
   
   (key, url) = key_url
@@ -30,11 +46,15 @@ def DownloadImage(key_url):
   if os.path.exists(filename):
     print('Image %s already exists. Skipping download.' % filename)
     return
-  
+  if key in down_failed_list.keys():
+     print('Image %s already in download failed list. Skipping download.' % filename)
+     return
   if len(url) < 10:
       print('Image %s url none. Skipping download.' % filename)
       return
-  for ti in range(5):
+  
+  total = 3
+  for ti in range(3):
     try:
       print('link Image %s .' % key)
       #response = urlopen(url)
@@ -43,8 +63,12 @@ def DownloadImage(key_url):
       break
     except:
       print('Warning: Could not download image %s from %s' % (key, url))
-      time.sleep(10)
-
+      if ti == (total - 1):
+          note_down_failed(key, url)
+          print('Warning: download failed, note %s from %s' % (key, url))
+      else:
+          time.sleep(10)
+    
   try:
     pil_image = Image.open(BytesIO(image_data))
   except:
@@ -71,7 +95,7 @@ def Run():
     os.mkdir(out_dir)
 
   key_url_list = ParseData(data_file)
-  for key_url in tqdm.tqdm(key_url_list):
+  for key_url in tqdm.tqdm(key_url_list[: :-1]):
       DownloadImage(key_url)
   #pool = multiprocessing.Pool(processes=1)
   #pool.map(DownloadImage, key_url_list)

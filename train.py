@@ -238,6 +238,9 @@ def run(config):
         else:
             last_epoch, step = -1, -1
 
+        if last_epoch > config.train.num_epochs:
+            print('group -- ', str(group_idx), '-- index-', ti, '  ----已训练，跳过')
+            continue
         print('from checkpoint: {} last epoch:{}'.format(checkpoint, last_epoch))
         print('group -- ', str(group_idx), '-- index-', ti)
         scheduler = get_scheduler(config, optimizer, last_epoch)
