@@ -14,7 +14,7 @@ model:
 train:
   dir: './results/attention_inceptionv3/writer'
   batch_size: 28
-  num_epochs: 20
+  num_epochs: 14
   num_grad_acc: 4
 
 eval:

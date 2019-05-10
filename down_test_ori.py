@@ -16,6 +16,8 @@ import time
 import tqdm
 import urllib.request
 import ast
+import socket
+socket.setdefaulttimeout(30)
 def ParseData(data_file):
   csvfile = open(data_file, 'r')
   csvreader = csv.reader(csvfile)
