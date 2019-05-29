@@ -16,7 +16,7 @@ def del_models_of_group(gi):
         if checkpoint.startswith('epoch_') and checkpoint.endswith('.pth'):
             print('checkpoint ', checkpoint)
             gstr = checkpoint.replace('epoch_', '')
-            gstr = checkpoint.replace('.pth', '')
+            gstr = gstr.replace('.pth', '')
             n = int(gstr)
             if n < 13:
                 f = os.path.join(checkpoint_dir, checkpoint)
