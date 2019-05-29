@@ -14,14 +14,14 @@ def del_models_of_group(gi):
     checkpoint_dir = os.path.join(gi_dir, 'checkpoint')
     for checkpoint in os.listdir(checkpoint_dir):
         if checkpoint.startswith('epoch_') and checkpoint.endswith('.pth'):
-            print('checkpoint ', checkpoint)
+           # print('checkpoint ', checkpoint)
             gstr = checkpoint.replace('epoch_', '')
             gstr = gstr.replace('.pth', '')
             n = int(gstr)
             if n < 13:
                 f = os.path.join(checkpoint_dir, checkpoint)
                 print('f', f)
-             #   os.remove(f)
+                os.remove(f)
             
 
         
