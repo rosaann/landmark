@@ -48,7 +48,7 @@ class DefaultDataset(Dataset):
         
         df_train = pd.read_csv(self.csv_path)
         num = df_train.shape[0]
-       # print('total ', num)
+
         self.key2idx = []
         self.pathlist = []
         
@@ -70,12 +70,9 @@ class DefaultDataset(Dataset):
     def __getitem__(self, index):
 
         filename = self.pathlist[index]
-        #image = misc.imread(filename)
         image = cv2.imread(filename)
         if self.transform is not None:
             image = self.transform(image)
-        #print('image ', image.shape, ' filename ', filename, 'index ', index)
-       # print('self.key2idx[index] ', self.key2idx[index])
         
         return {'image': image,
                 'key': self.key2idx[index]}

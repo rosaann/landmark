@@ -38,3 +38,14 @@ def get_dataloader(config, group_idx, split, transform=None, **_):
                             num_workers=config.transform.num_preprocessor,
                             pin_memory=False)
     return dataloader
+
+def get_test_loader(config, img_id_list):
+        dataset = TestDataset(img_id_list)
+        batch_size = config.train.batch_size
+        dataloader = DataLoader(dataset,
+                            shuffle=False,
+                            batch_size=batch_size,                            
+                            num_workers=8,
+                            pin_memory=False)
+        
+        return dataloader

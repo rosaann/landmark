@@ -9,6 +9,7 @@ import torch
 
 
 def get_last_checkpoint(checkpoint_dir):
+    
   checkpoints = [checkpoint
                  for checkpoint in os.listdir(checkpoint_dir)
                  if checkpoint.startswith('epoch_') and checkpoint.endswith('.pth')]
@@ -16,6 +17,13 @@ def get_last_checkpoint(checkpoint_dir):
     return os.path.join(checkpoint_dir, list(sorted(checkpoints))[-1])
   return None
 
+def get_model_saved(config, gi, n_id):
+    checkpoint_dir = os.path.join(config.train.dir, str(gi), 'checkpoint')
+    for checkpoint in os.listdir(checkpoint_dir):
+        num = checkpoint.replace('epoch_', '')
+        num = num.replace('.pth', '')
+        if int(num) == n_id:
+            return os.path.join(checkpoint_dir, checkpoint)
 
 def get_initial_checkpoint(config, gi):
   checkpoint_dir = os.path.join(config.train.dir, str(gi), 'checkpoint')
