@@ -80,8 +80,8 @@ def parse_args():
 
 def main():
     args = parse_args()
-    if args.config_file is None:
-      raise Exception('no configuration file')
+ #   if args.config_file is None:
+ #     raise Exception('no configuration file')
 
     config = utils.config.load(args.config_file)
     #获取testimg列表
