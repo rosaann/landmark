@@ -86,6 +86,7 @@ def main():
     config = utils.config.load(args.config_file)
     #获取testimg列表
     test_img_list = getTestImgList()
+    print('test_img_list ', test_img_list)
     test_data_set = get_test_loader(config, test_img_list)
     result = {}
     for img_id in test_img_list:
