@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader
 
 from .default import DefaultDataset
 from .small import SmallDataset
-from .test import TestDataset
+from .test_dataset import TestDataset
 
 
 def get_dataset(config,group_idx, split, transform=None, last_epoch=-1):
