@@ -19,7 +19,7 @@ import torch.nn.functional as F
 
 test_data_file = 'data/test_csv/test.csv'
 test_img_download_fail_list = []
-test_img_list = []
+
 def ParseData(data_file):
   csvfile = open(data_file, 'r')
   csvreader = csv.reader(csvfile)
@@ -35,6 +35,7 @@ def getDownFailedImgs():
             return down_failed_list
         
 def getTestImgList():
+    test_img_list = []
     key_url_list = ParseData(test_data_file)
     test_img_download_fail_list = getDownFailedImgs()
     print('test_img_download_fail_list ', len(test_img_download_fail_list))
@@ -43,6 +44,8 @@ def getTestImgList():
             continue
         if img_key not in test_img_download_fail_list:
             test_img_list.append(img_key)
+            
+    return test_img_list
 
 def inference(model, images):
     logits = model(images)
