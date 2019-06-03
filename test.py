@@ -5,7 +5,8 @@ Created on Tue Apr 30 09:20:02 2019
 
 @author: zl
 """
-import csv, os, ast, tqdm, pd
+import csv, os, ast, tqdm
+import pandas as pd
 from datasets import get_test_loader
 import torch
 from models import get_model
