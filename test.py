@@ -5,7 +5,7 @@ Created on Tue Apr 30 09:20:02 2019
 
 @author: zl
 """
-import csv, os, ast, tqdm
+import csv, os, ast, tqdm, pd
 from datasets import get_test_loader
 import torch
 from models import get_model
@@ -14,6 +14,7 @@ import utils.config
 import utils.checkpoint
 from optimizers import get_optimizer
 import argparse
+import torch.nn.functional as F
 
 test_data_file = 'data/test_csv/test.csv'
 test_img_download_fail_list = []
@@ -63,8 +64,9 @@ def test_one_model(dataloader, model, group_key_list, result_set):
             
         logits, aux_logits, probabilities = inference(model, images)
         for img_i, img_id in enumerate(img_ids):
-            real_landmark_id = group_key_list[img_i]
-            result_set[img_id][real_landmark_id] = probabilities[img_i]
+            #real_landmark_id = group_key_list[img_i]
+            for land_i, real_landmark_id in group_key_list:
+                result_set[img_id][real_landmark_id] = probabilities[img_i][land_i]
             
     return result_set
 
@@ -89,7 +91,7 @@ def main():
         #初始化添加
         result[img_id] = {}
     
-    with open(os.path.join(data_dir, 'key_groups.txt'), 'r') as f: 
+    with open(os.path.join('data', 'key_groups.txt'), 'r') as f: 
          key_group_list = ast.literal_eval(f.read())
     
     best_model_idx_dic = {}     
@@ -105,6 +107,15 @@ def main():
         best_epoch, step = utils.checkpoint.load_checkpoint(model, optimizer, checkpoint)
         result = test_one_model(test_data_set, model, key_group, result)
         #
+    result_list = []
+    for img_ps in result.keys():
+        ps = result[img_ps]
+        max_p_key = max(ps, key=ps.get)
+        result_list.append((img_ps, max_p_key, ps[max_p_key]))
+        
+    test_pd = pd.DataFrame.from_records(result_list, columns=['img_id', 'landmark_id', 'pers'])
+    output_filename = os.path.join('', 'test_img_land.csv')
+    test_pd.to_csv(output_filename, index=False)   
 
 if __name__ == '__main__':
     main()
