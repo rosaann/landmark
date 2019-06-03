@@ -38,7 +38,7 @@ def getTestImgList():
     test_img_list = []
     key_url_list = ParseData(test_data_file)
     test_img_download_fail_list = getDownFailedImgs()
-    print('test_img_download_fail_list ', len(test_img_download_fail_list))
+   # print('test_img_download_fail_list ', len(test_img_download_fail_list))
     for img_key, url in tqdm.tqdm(key_url_list):
         if len(url) < 10:
             continue
@@ -90,7 +90,7 @@ def main():
     config = utils.config.load(args.config_file)
     #获取testimg列表
     test_img_list = getTestImgList()
-    print('test_img_list ', test_img_list)
+    print('test_img_list ', len(test_img_list))
     test_data_set = get_test_loader(config, test_img_list)
     result = {}
     for img_id in test_img_list:
