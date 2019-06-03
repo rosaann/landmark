@@ -37,6 +37,7 @@ def getDownFailedImgs():
 def getTestImgList():
     key_url_list = ParseData(test_data_file)
     test_img_download_fail_list = getDownFailedImgs()
+    print('test_img_download_fail_list ', len(test_img_download_fail_list))
     for img_key, url in tqdm.tqdm(key_url_list):
         if len(url) < 10:
             continue
