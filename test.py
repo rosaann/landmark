@@ -47,7 +47,27 @@ def getTestImgList():
             test_img_list.append(img_key)
             
     return test_img_list
-
+def parse_args():
+    parser = argparse.ArgumentParser(description='HPA')
+    parser.add_argument('--config', dest='config_file',
+                        help='configuration filename',
+                        default=None, type=str)
+    return parser.parse_args()
+def gen_test_csv():
+    img_dir = os.path.join('data/test_images', 'test_images')
+    img_list = []
+    
+    for image in tqdm.tqdm(os.listdir(img_dir)):
+       # print('im ', image)
+        filesize = os.path.getsize(os.path.join(img_dir, image))
+       # print('filesize ', filesize)
+        if filesize > 0: 
+            img_list.append((image))
+        
+     #  test_pd = pd.DataFrame.from_records(img_list, columns=['img_id'])
+  #  output_filename = os.path.join('', 'test_img_2.csv')
+  #  test_pd.to_csv(output_filename, index=False)   
+    return img_list 
 def inference(model, images):
     logits = model(images)
   #  print('logits ', logits)
@@ -75,32 +95,13 @@ def test_one_model(dataloader, model, group_key_list):
         for img_i, img_id in enumerate(img_ids):
             #real_landmark_id = group_key_list[img_i]
            # print('group_key_list ', group_key_list)
+            result_set[img_id] = {}
             for land_i, real_landmark_id in enumerate(group_key_list):
                 result_set[img_id][real_landmark_id] = probabilities[img_i][land_i]
             
     return result_set
 
-def parse_args():
-    parser = argparse.ArgumentParser(description='HPA')
-    parser.add_argument('--config', dest='config_file',
-                        help='configuration filename',
-                        default=None, type=str)
-    return parser.parse_args()
-def gen_test_csv():
-    img_dir = os.path.join('data/test_images', 'test_images')
-    img_list = []
-    
-    for image in tqdm.tqdm(os.listdir(img_dir)):
-       # print('im ', image)
-        filesize = os.path.getsize(os.path.join(img_dir, image))
-       # print('filesize ', filesize)
-        if filesize > 0: 
-            img_list.append((image))
-        
-     #  test_pd = pd.DataFrame.from_records(img_list, columns=['img_id'])
-  #  output_filename = os.path.join('', 'test_img_2.csv')
-  #  test_pd.to_csv(output_filename, index=False)   
-    return img_list 
+
     
 def main():
     args = parse_args()
@@ -125,7 +126,7 @@ def main():
     for gi in range(204):
         best_model_idx_dic[gi] = 13
      
-    result_list = []
+    result_set_whole= {}
     for gi, key_group in enumerate( tqdm.tqdm(key_group_list)):
         test_data_set = get_test_loader(config, test_img_list, get_transform(config, 'val'))
         model = get_model(config, gi)
@@ -139,10 +140,20 @@ def main():
         #
     
         for img_ps in result_set.keys():
-            ps = result[img_ps]
+            ps = result_set[img_ps]
             max_p_key = max(ps, key=ps.get)
-            result_list.append((img_ps, max_p_key, ps[max_p_key]))
-        
+            if result_set_whole.has_key(img_ps):
+                result_set_whole[img_ps][max_p_key] = ps[max_p_key]
+            else:
+                result_set_whole[img_ps] = {}
+                result_set_whole[img_ps][max_p_key] = ps[max_p_key]
+    
+    result_list = []
+    for img_ps in result_set_whole.keys():
+            ps = result_set_whole[img_ps]
+            max_p_key = max(ps, key=ps.get)
+            result_list.append((img_ps,max_p_key, ps[max_p_key] ))
+              
     test_pd = pd.DataFrame.from_records(result_list, columns=['img_id', 'landmark_id', 'pers'])
     output_filename = os.path.join('', 'test_img_land.csv')
     test_pd.to_csv(output_filename, index=False)   
