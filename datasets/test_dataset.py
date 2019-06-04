@@ -32,6 +32,7 @@ class TestDataset(Dataset):
         if self.transform is not None:
             image = self.transform(image)
         
+        print('img ', image)
         return {'image': image,'img_id':self.img_id_list[index]
                 }
 
