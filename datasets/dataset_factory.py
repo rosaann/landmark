@@ -45,7 +45,7 @@ def get_test_loader(config, img_id_list, transform=None):
         dataloader = DataLoader(dataset,
                             shuffle=False,
                             batch_size=batch_size,                            
-                            num_workers=8,
+                            num_workers=1,
                             pin_memory=False)
         
         return dataloader
