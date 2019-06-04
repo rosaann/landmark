@@ -71,6 +71,7 @@ def test_one_model(dataloader, model, group_key_list, result_set):
         logits, aux_logits, probabilities = inference(model, images)
         for img_i, img_id in enumerate(img_ids):
             #real_landmark_id = group_key_list[img_i]
+            print('group_key_list ', group_key_list)
             for land_i, real_landmark_id in group_key_list:
                 result_set[img_id][real_landmark_id] = probabilities[img_i][land_i]
             
