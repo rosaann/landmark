@@ -123,5 +123,17 @@ def main():
     output_filename = os.path.join('', 'test_img_land.csv')
     test_pd.to_csv(output_filename, index=False)   
 
+def gen_test_csv():
+    img_dir = os.path.join('data/test_images', 'test_images')
+    img_list = []
+    
+    for image in tqdm.tqdm(os.listdir(img_dir)):
+        img_list.append((image))
+    
+    test_pd = pd.DataFrame.from_records(img_list, columns=['img_id'])
+    output_filename = os.path.join('', 'test_img_2.csv')
+    test_pd.to_csv(output_filename, index=False)   
+        
 if __name__ == '__main__':
-    main()
+    gen_test_csv()
+    #main()
