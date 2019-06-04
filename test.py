@@ -92,7 +92,7 @@ def gen_test_csv():
      #  test_pd = pd.DataFrame.from_records(img_list, columns=['img_id'])
   #  output_filename = os.path.join('', 'test_img_2.csv')
   #  test_pd.to_csv(output_filename, index=False)   
-     return img_list 
+    return img_list 
  
 def main():
     args = parse_args()
