@@ -114,10 +114,10 @@ def main():
     test_img_list = gen_test_csv()
     print('test_img_list ', len(test_img_list))
     
-    result = {}
+    result_set_whole = {}
     for img_id in test_img_list:
         #初始化添加
-        result[img_id] = {}
+        result_set_whole[img_id] = {}
     
     with open(os.path.join('data', 'key_groups.txt'), 'r') as f: 
          key_group_list = ast.literal_eval(f.read())
@@ -126,7 +126,6 @@ def main():
     for gi in range(204):
         best_model_idx_dic[gi] = 13
      
-    result_set_whole= {}
     for gi, key_group in enumerate( tqdm.tqdm(key_group_list)):
         test_data_set = get_test_loader(config, test_img_list, get_transform(config, 'val'))
         model = get_model(config, gi)
@@ -142,12 +141,8 @@ def main():
         for img_ps in result_set.keys():
             ps = result_set[img_ps]
             max_p_key = max(ps, key=ps.get)
-            if result_set_whole.has_key(img_ps):
-                result_set_whole[img_ps][max_p_key] = ps[max_p_key]
-            else:
-                result_set_whole[img_ps] = {}
-                result_set_whole[img_ps][max_p_key] = ps[max_p_key]
-    
+            result_set_whole[img_ps][max_p_key] = ps[max_p_key]
+            
     result_list = []
     for img_ps in result_set_whole.keys():
             ps = result_set_whole[img_ps]
