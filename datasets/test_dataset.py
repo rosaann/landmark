@@ -21,7 +21,7 @@ class TestDataset(Dataset):
         self.size = len(self.img_id_list)
 
     def to_filepath(self, v):        
-            return os.path.join(self.images_dir, v + '.jpg')
+            return os.path.join(self.images_dir, v )
     
     def __getitem__(self, index):
         filename = self.to_filepath(self.img_id_list[index])
