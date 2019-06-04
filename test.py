@@ -86,7 +86,7 @@ def gen_test_csv():
     img_list = []
     
     for image in tqdm.tqdm(os.listdir(img_dir)):
-        print('im ', image)
+       # print('im ', image)
         img_list.append((image))
         
      #  test_pd = pd.DataFrame.from_records(img_list, columns=['img_id'])
