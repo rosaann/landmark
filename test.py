@@ -140,5 +140,5 @@ def main():
     
    
 if __name__ == '__main__':
-    gen_test_csv()
-    #main()
+   # gen_test_csv()
+    main()
