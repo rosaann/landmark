@@ -67,7 +67,7 @@ def test_one_model(dataloader, model, group_key_list, result_set):
         if torch.cuda.is_available():
             images = images.cuda()
           #  img_ids = img_ids.cuda()
-            
+        print('batch ', len (images))    
         logits, aux_logits, probabilities = inference(model, images)
         for img_i, img_id in enumerate(img_ids):
             #real_landmark_id = group_key_list[img_i]
