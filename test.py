@@ -16,6 +16,7 @@ import utils.checkpoint
 from optimizers import get_optimizer
 import argparse
 import torch.nn.functional as F
+from transforms import get_transform
 
 test_data_file = 'data/test_csv/test.csv'
 test_img_download_fail_list = []
@@ -107,7 +108,7 @@ def main():
    # test_img_list = getTestImgList()
     test_img_list = gen_test_csv()
     print('test_img_list ', len(test_img_list))
-    test_data_set = get_test_loader(config, test_img_list)
+    test_data_set = get_test_loader(config, test_img_list, get_transform(config, 'val'))
     result = {}
     for img_id in test_img_list:
         #初始化添加

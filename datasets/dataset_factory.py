@@ -39,8 +39,8 @@ def get_dataloader(config, group_idx, split, transform=None, **_):
                             pin_memory=False)
     return dataloader
 
-def get_test_loader(config, img_id_list):
-        dataset = TestDataset(img_id_list)
+def get_test_loader(config, img_id_list, transform=None):
+        dataset = TestDataset(img_id_list, transform)
         batch_size = config.train.batch_size
         dataloader = DataLoader(dataset,
                             shuffle=False,
