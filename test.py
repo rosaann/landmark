@@ -66,7 +66,7 @@ def test_one_model(dataloader, model, group_key_list, result_set):
         img_ids = data['img_id']
         if torch.cuda.is_available():
             images = images.cuda()
-            img_ids = img_ids.cuda()
+          #  img_ids = img_ids.cuda()
             
         logits, aux_logits, probabilities = inference(model, images)
         for img_i, img_id in enumerate(img_ids):
