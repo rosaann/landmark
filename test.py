@@ -81,7 +81,19 @@ def parse_args():
                         help='configuration filename',
                         default=None, type=str)
     return parser.parse_args()
-
+def gen_test_csv():
+    img_dir = os.path.join('data/test_images', 'test_images')
+    img_list = []
+    
+    for image in tqdm.tqdm(os.listdir(img_dir)):
+        print('im ', image)
+        img_list.append((image))
+        
+     #  test_pd = pd.DataFrame.from_records(img_list, columns=['img_id'])
+  #  output_filename = os.path.join('', 'test_img_2.csv')
+  #  test_pd.to_csv(output_filename, index=False)   
+     return img_list 
+ 
 def main():
     args = parse_args()
  #   if args.config_file is None:
@@ -89,7 +101,8 @@ def main():
 
     config = utils.config.load(args.config_file)
     #获取testimg列表
-    test_img_list = getTestImgList()
+   # test_img_list = getTestImgList()
+    test_img_list = gen_test_csv()
     print('test_img_list ', len(test_img_list))
     test_data_set = get_test_loader(config, test_img_list)
     result = {}
@@ -123,18 +136,9 @@ def main():
     output_filename = os.path.join('', 'test_img_land.csv')
     test_pd.to_csv(output_filename, index=False)   
 
-def gen_test_csv():
-    img_dir = os.path.join('data/test_images', 'test_images')
-    img_list = []
+
     
-    for image in tqdm.tqdm(os.listdir(img_dir)):
-        print('im ', image)
-        img_list.append((image))
-    
-    test_pd = pd.DataFrame.from_records(img_list, columns=['img_id'])
-    output_filename = os.path.join('', 'test_img_2.csv')
-    test_pd.to_csv(output_filename, index=False)   
-        
+   
 if __name__ == '__main__':
     gen_test_csv()
     #main()
