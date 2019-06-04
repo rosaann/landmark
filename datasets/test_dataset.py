@@ -27,6 +27,7 @@ class TestDataset(Dataset):
         filename = self.to_filepath(self.img_id_list[index])
         print('filename ', filename)
         image = cv2.imread(filename)
+        print('img', image)
         if self.transform is not None:
             image = self.transform(image)
         
