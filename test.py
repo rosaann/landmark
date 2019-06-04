@@ -111,7 +111,7 @@ def main():
    # test_img_list = getTestImgList()
     test_img_list = gen_test_csv()
     print('test_img_list ', len(test_img_list))
-    test_data_set = get_test_loader(config, test_img_list, get_transform(config, 'val'))
+    
     result = {}
     for img_id in test_img_list:
         #初始化添加
@@ -125,6 +125,7 @@ def main():
         best_model_idx_dic[gi] = 13
         
     for gi, key_group in enumerate( tqdm.tqdm(key_group_list)):
+        test_data_set = get_test_loader(config, test_img_list, get_transform(config, 'val'))
         model = get_model(config, gi)
         if torch.cuda.is_available():
             model = model.cuda()
