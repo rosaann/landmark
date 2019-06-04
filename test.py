@@ -87,7 +87,7 @@ def gen_test_csv():
     
     for image in tqdm.tqdm(os.listdir(img_dir)):
        # print('im ', image)
-        filesize = os.path.getsize(image)
+        filesize = os.path.getsize(os.path.join(img_dir, image))
         print('filesize ', filesize)
         img_list.append((image))
         
