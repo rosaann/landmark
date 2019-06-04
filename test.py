@@ -132,7 +132,9 @@ def main():
         optimizer = get_optimizer(config, model.parameters())
         checkpoint = utils.checkpoint.get_model_saved(config, gi, best_model_idx_dic[gi])
         best_epoch, step = utils.checkpoint.load_checkpoint(model, optimizer, checkpoint)
-        result = test_one_model(test_data_set, model, key_group, result)
+       # result = test_one_model(test_data_set, model, key_group, result)
+        test_one_model(test_data_set, model, key_group, result)
+
         #
     result_list = []
     for img_ps in result.keys():
