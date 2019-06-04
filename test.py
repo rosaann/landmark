@@ -60,14 +60,16 @@ def inference(model, images):
     return logits, aux_logits, probabilities
      
 def test_one_model(dataloader, model, group_key_list, result_set):
+    model.eval()
     tbar = tqdm.tqdm(enumerate(dataloader))
-    for i, data in tbar:
+    with torch.no_grad():
+      for i, data in tbar:
         images = data['image']
         img_ids = data['img_id']
         if torch.cuda.is_available():
             images = images.cuda()
           #  img_ids = img_ids.cuda()
-        print('batch ', len (images))    
+       # print('batch ', len (images))    
         logits, aux_logits, probabilities = inference(model, images)
         for img_i, img_id in enumerate(img_ids):
             #real_landmark_id = group_key_list[img_i]
