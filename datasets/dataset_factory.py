@@ -41,7 +41,7 @@ def get_dataloader(config, group_idx, split, transform=None, **_):
 
 def get_test_loader(config, img_id_list, transform=None):
         dataset = TestDataset(img_id_list, transform)
-        batch_size = config.train.batch_size
+        batch_size = config.test.batch_size
         dataloader = DataLoader(dataset,
                             shuffle=False,
                             batch_size=batch_size,                            

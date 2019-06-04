@@ -20,6 +20,9 @@ train:
 eval:
   batch_size: 28
 
+test:
+  batch_size: 20
+  
 loss:
   name: 'cross_entropy'
 

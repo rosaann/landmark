@@ -31,6 +31,9 @@ def _get_default_config():
   c.eval = edict()
   c.eval.batch_size = 64
 
+  c.test = edict()
+  c.test.batch_size = 14
+  
   # optimizer
   c.optimizer = edict()
   c.optimizer.name = 'adam'
