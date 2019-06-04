@@ -59,9 +59,10 @@ def inference(model, images):
   #  print('probabilities ', probabilities)
     return logits, aux_logits, probabilities
      
-def test_one_model(dataloader, model, group_key_list, result_set):
+def test_one_model(dataloader, model, group_key_list):
     model.eval()
     tbar = tqdm.tqdm(enumerate(dataloader))
+    result_set = {}
     with torch.no_grad():
       for i, data in tbar:
         images = data['image']
@@ -100,7 +101,7 @@ def gen_test_csv():
   #  output_filename = os.path.join('', 'test_img_2.csv')
   #  test_pd.to_csv(output_filename, index=False)   
     return img_list 
- 
+    
 def main():
     args = parse_args()
  #   if args.config_file is None:
@@ -123,7 +124,8 @@ def main():
     best_model_idx_dic = {}     
     for gi in range(204):
         best_model_idx_dic[gi] = 13
-        
+     
+    result_list = []
     for gi, key_group in enumerate( tqdm.tqdm(key_group_list)):
         test_data_set = get_test_loader(config, test_img_list, get_transform(config, 'val'))
         model = get_model(config, gi)
@@ -132,15 +134,14 @@ def main():
         optimizer = get_optimizer(config, model.parameters())
         checkpoint = utils.checkpoint.get_model_saved(config, gi, best_model_idx_dic[gi])
         best_epoch, step = utils.checkpoint.load_checkpoint(model, optimizer, checkpoint)
-       # result = test_one_model(test_data_set, model, key_group, result)
-        test_one_model(test_data_set, model, key_group, result)
+        result_set = test_one_model(test_data_set, model, key_group)
 
         #
-    result_list = []
-    for img_ps in result.keys():
-        ps = result[img_ps]
-        max_p_key = max(ps, key=ps.get)
-        result_list.append((img_ps, max_p_key, ps[max_p_key]))
+    
+        for img_ps in result_set.keys():
+            ps = result[img_ps]
+            max_p_key = max(ps, key=ps.get)
+            result_list.append((img_ps, max_p_key, ps[max_p_key]))
         
     test_pd = pd.DataFrame.from_records(result_list, columns=['img_id', 'landmark_id', 'pers'])
     output_filename = os.path.join('', 'test_img_land.csv')
