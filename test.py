@@ -114,7 +114,7 @@ def get_test_max_landmark_of_one_model(config, gi, best_model_idx, key_group):
         if torch.cuda.is_available():
             model = model.cuda()
         optimizer = get_optimizer(config, model.parameters())
-        checkpoint = utils.checkpoint.get_model_saved(config, gi)
+        checkpoint = utils.checkpoint.get_model_saved(config, gi, best_model_idx)
         best_epoch, step = utils.checkpoint.load_checkpoint(model, optimizer, checkpoint)
         result_set = test_one_model(test_data_set, model, key_group)
 
