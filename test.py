@@ -87,6 +87,8 @@ def gen_test_csv():
     
     for image in tqdm.tqdm(os.listdir(img_dir)):
        # print('im ', image)
+        filesize = os.path.getsize(image)
+        print('filesize ', filesize)
         img_list.append((image))
         
      #  test_pd = pd.DataFrame.from_records(img_list, columns=['img_id'])
@@ -137,8 +139,7 @@ def main():
     test_pd.to_csv(output_filename, index=False)   
 
 
-    
    
 if __name__ == '__main__':
-   # gen_test_csv()
-    main()
+    gen_test_csv()
+   # main()
