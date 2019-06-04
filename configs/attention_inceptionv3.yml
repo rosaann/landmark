@@ -21,7 +21,7 @@ eval:
   batch_size: 28
 
 test:
-  batch_size: 20
+  batch_size: 2
   
 loss:
   name: 'cross_entropy'
