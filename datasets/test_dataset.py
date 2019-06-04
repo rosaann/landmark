@@ -28,11 +28,12 @@ class TestDataset(Dataset):
     
     def __getitem__(self, index):
         filename = self.to_filepath(self.img_id_list[index])
+        print('filename ', filename)
         image = cv2.imread(filename)
         if self.transform is not None:
             image = self.transform(image)
         
-        print('img ', image)
+       # print('img ', image)
         return {'image': image,'img_id':self.img_id_list[index]
                 }
 
