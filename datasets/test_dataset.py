@@ -15,7 +15,7 @@ class TestDataset(Dataset):
                  transform=None,
                  **_):
         self.transform = transform
-        self.images_dir = os.path.join('./data/test_images', 'test_images')
+        self.images_dir = os.path.join('data/test_images', 'test_images')
         self.img_id_list = img_id_list
         
         self.size = len(self.img_id_list)
