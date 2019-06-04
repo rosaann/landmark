@@ -101,38 +101,20 @@ def test_one_model(dataloader, model, group_key_list):
             
     return result_set
 
-
+def get_test_max_landmark_of_one_model(config, gi, best_model_idx, key_group):
+        test_img_list = gen_test_csv()
+        print('test_img_list ', len(test_img_list))
     
-def main():
-    args = parse_args()
- #   if args.config_file is None:
- #     raise Exception('no configuration file')
-
-    config = utils.config.load(args.config_file)
-    #获取testimg列表
-   # test_img_list = getTestImgList()
-    test_img_list = gen_test_csv()
-    print('test_img_list ', len(test_img_list))
-    
-    result_set_whole = {}
-    for img_id in test_img_list:
-        #初始化添加
-        result_set_whole[img_id] = {}
-    
-    with open(os.path.join('data', 'key_groups.txt'), 'r') as f: 
-         key_group_list = ast.literal_eval(f.read())
-    
-    best_model_idx_dic = {}     
-    for gi in range(204):
-        best_model_idx_dic[gi] = 13
-     
-    for gi, key_group in enumerate( tqdm.tqdm(key_group_list)):
+        result_set_whole = {}
+        for img_id in test_img_list:
+            #初始化添加
+            result_set_whole[img_id] = {}
         test_data_set = get_test_loader(config, test_img_list, get_transform(config, 'val'))
         model = get_model(config, gi)
         if torch.cuda.is_available():
             model = model.cuda()
         optimizer = get_optimizer(config, model.parameters())
-        checkpoint = utils.checkpoint.get_model_saved(config, gi, best_model_idx_dic[gi])
+        checkpoint = utils.checkpoint.get_model_saved(config, gi)
         best_epoch, step = utils.checkpoint.load_checkpoint(model, optimizer, checkpoint)
         result_set = test_one_model(test_data_set, model, key_group)
 
@@ -143,11 +125,34 @@ def main():
             max_p_key = max(ps, key=ps.get)
             result_set_whole[img_ps][max_p_key] = ps[max_p_key]
             
+        return result_set_whole
+    
+def main():
+    args = parse_args()
+ #   if args.config_file is None:
+ #     raise Exception('no configuration file')
+
+    config = utils.config.load(args.config_file)
+    #获取testimg列表
+   # test_img_list = getTestImgList()
+    
+    
+    with open(os.path.join('data', 'key_groups.txt'), 'r') as f: 
+         key_group_list = ast.literal_eval(f.read())
+    
+    best_model_idx_dic = {}     
+    for gi in range(204):
+        best_model_idx_dic[gi] = 13
+     
+    for gi, key_group in enumerate( tqdm.tqdm(key_group_list)):
+        result_set_whole = get_test_max_landmark_of_one_model(config, gi, best_model_idx_dic[gi], key_group)
+        
+            
     result_list = []
     for img_ps in result_set_whole.keys():
-            ps = result_set_whole[img_ps]
-            max_p_key = max(ps, key=ps.get)
-            result_list.append((img_ps,max_p_key, ps[max_p_key] ))
+        ps = result_set_whole[img_ps]
+        max_p_key = max(ps, key=ps.get)
+        result_list.append((img_ps,max_p_key, ps[max_p_key] ))
               
     test_pd = pd.DataFrame.from_records(result_list, columns=['img_id', 'landmark_id', 'pers'])
     output_filename = os.path.join('', 'test_img_land.csv')
