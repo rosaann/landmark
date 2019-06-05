@@ -105,10 +105,10 @@ def get_test_max_landmark_of_one_model(config, gi, best_model_idx, key_group):
         test_img_list = gen_test_csv()
         print('test_img_list ', len(test_img_list))
     
-        result_set_whole = {}
-        for img_id in test_img_list:
+       # result_set_whole = {}
+       # for img_id in test_img_list:
             #初始化添加
-            result_set_whole[img_id] = {}
+          #  result_set_whole[img_id] = {}
         test_data_set = get_test_loader(config, test_img_list, get_transform(config, 'val'))
         model = get_model(config, gi)
         if torch.cuda.is_available():
@@ -119,13 +119,18 @@ def get_test_max_landmark_of_one_model(config, gi, best_model_idx, key_group):
         result_set = test_one_model(test_data_set, model, key_group)
 
         #
-    
+        result_list_whole = []
         for img_ps in result_set.keys():
             ps = result_set[img_ps]
             max_p_key = max(ps, key=ps.get)
-            result_set_whole[img_ps][max_p_key] = ps[max_p_key]
+           # result_set_whole[img_ps][max_p_key] = ps[max_p_key]
+            result_list_whole.append((img_ps, max_p_key, ps[max_p_key]))
             
-        return result_set_whole
+        test_pd = pd.DataFrame.from_records(result_list_whole, columns=['img_id', 'landmark_id', 'pers'])
+        output_filename = os.path.join('./result/test/', 'test_img_land_' + str(gi) + '.csv')
+        test_pd.to_csv(output_filename, index=False) 
+            
+        return 
     
 def main():
     args = parse_args()
@@ -145,7 +150,7 @@ def main():
         best_model_idx_dic[gi] = 13
      
     for gi, key_group in enumerate( tqdm.tqdm(key_group_list)):
-        result_set_whole = get_test_max_landmark_of_one_model(config, gi, best_model_idx_dic[gi], key_group)
+         get_test_max_landmark_of_one_model(config, gi, best_model_idx_dic[gi], key_group)
         
             
     result_list = []
