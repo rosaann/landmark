@@ -150,7 +150,7 @@ def main():
         best_model_idx_dic[gi] = 13
      
     for gi, key_group in enumerate( tqdm.tqdm(key_group_list)):
-        if gi < 12:
+        if gi < 13:
             continue
         get_test_max_landmark_of_one_model(config, gi, best_model_idx_dic[gi], key_group)
         
