@@ -127,7 +127,7 @@ def get_test_max_landmark_of_one_model(config, gi, best_model_idx, key_group):
             result_list_whole.append((img_ps, max_p_key, ps[max_p_key]))
             
         test_pd = pd.DataFrame.from_records(result_list_whole, columns=['img_id', 'landmark_id', 'pers'])
-        output_filename = os.path.join('./result/test/', 'test_img_land_' + str(gi) + '.csv')
+        output_filename = os.path.join('./results/test/', 'test_img_land_' + str(gi) + '.csv')
         test_pd.to_csv(output_filename, index=False) 
             
         return 
