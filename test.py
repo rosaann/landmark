@@ -149,7 +149,7 @@ def main():
     for gi in range(204):
         best_model_idx_dic[gi] = 13
      
-    for gi, key_group in enumerate( tqdm.tqdm(key_group_list)):
+    for gi, key_group in enumerate( tqdm.tqdm(key_group_list[12:])):
          get_test_max_landmark_of_one_model(config, gi, best_model_idx_dic[gi], key_group)
         
             
